@@ -1,0 +1,63 @@
+{
+  "name": "tykersaurus-trial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": " babel-node server",
+    "server": "nodemon --exec babel-node server",
+    "client": "cd client && npm run dev",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev:server": "cd client && npm run build && cd .. && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leo-nguyen-goldenowl/tykersaurus-trial.git"
+  },
+  "author": "Leo Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leo-nguyen-goldenowl/tykersaurus-trial/issues"
+  },
+  "homepage": "https://github.com/leo-nguyen-goldenowl/tykersaurus-trial#readme",
+  "_moduleAliases": {
+    "@root": ".",
+    "@config": "config",
+    "@constants": "src/constants",
+    "@controllers": "src/controllers",
+    "@helpers": "src/helpers",
+    "@middlewares": "src/middlewares",
+    "@models": "src/models",
+    "@services": "src/services",
+    "@routes": "src/routes",
+    "@utils": "src/utils"
+  },
+  "dependencies": {
+    "config": "^3.3.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "module-alias": "^2.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "concurrently": "^5.3.0",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3",
+    "nodemon": "^2.0.6"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
