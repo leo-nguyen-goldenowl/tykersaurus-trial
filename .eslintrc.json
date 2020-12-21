@@ -41,6 +41,10 @@
     "no-nested-ternary": 0,
     "quotes": [2, "single", "avoid-escape"],
     "jsx-quotes": ["error", "prefer-single"],
-    "semi": ["error", "never"]
+    "semi": ["error", "never"],
+    "react/prefer-stateless-function": 0,
+    "react/no-find-dom-node": 0,
+    "react/prop-types": 0,
+    "react/display-name": 0
   }
 }
