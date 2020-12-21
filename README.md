@@ -1,1 +1,0 @@
-# tykersaurus-trial
