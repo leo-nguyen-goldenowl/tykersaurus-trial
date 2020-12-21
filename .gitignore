@@ -2,3 +2,6 @@
 node_modules
 
 resources/temp
+
+client/.eslintcache
+client/.DS_Store

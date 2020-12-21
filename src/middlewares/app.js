@@ -1,10 +1,12 @@
-import cors from 'cors'
-import express from 'express'
+const cors = require('cors')
+const express = require('express')
 
-export const load = (app) => {
+const load = (app) => {
   app.use(cors())
 
   app.use(express.json())
 
   app.use(express.urlencoded({ extended: true }))
 }
+
+module.exports = load
