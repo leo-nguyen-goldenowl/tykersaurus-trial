@@ -1,0 +1,11 @@
+{
+  "app": {
+    "port": 5000,
+    "defaultAccount": {
+      "username": "D8001-0",
+      "password": "1304"
+    },
+    "url": " https://www.golfres-system.com/"
+  },
+  "database": {}
+}
