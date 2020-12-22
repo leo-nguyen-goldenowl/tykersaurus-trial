@@ -23,7 +23,8 @@
     "config": "^3.3.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "node-sass": "^4.14.1"
+    "node-sass": "^4.14.1",
+    "selenium-webdriver": "^4.0.0-alpha.8"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
