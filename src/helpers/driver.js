@@ -11,9 +11,9 @@ module.exports = new (class DriverHelper {
     options.setChromeBinaryPath(process.env.CHROME_BINARY_PATH)
     let serviceBuilder = new chrome.ServiceBuilder(process.env.CHROMEDRIVER_PATH)
 
-    options.addArguments('--headless')
-    options.addArguments('--disable-gpu')
-    options.addArguments('--no-sandbox')
+    // options.addArguments('--headless')
+    // options.addArguments('--disable-gpu')
+    // options.addArguments('--no-sandbox')
 
     let webDriver = await new Builder()
       .forBrowser(type)
