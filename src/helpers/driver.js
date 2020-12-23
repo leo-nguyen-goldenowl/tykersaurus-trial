@@ -7,7 +7,25 @@ module.exports = new (class DriverHelper {
    * @param {string} type - default to Chrome Browser, options chrome/firefox
    */
   async openBrowser({ type = DriverConstant.browser.CHROME }) {
-    const webDriver = await new Builder().forBrowser(type).build()
+    require('../../chromedriver')
+    const chrome = require('selenium-webdriver/chrome')
+
+    let options = new chrome.Options()
+    options.setChromeBinaryPath(process.env.CHROME_BINARY_PATH)
+    let serviceBuilder = new chrome.ServiceBuilder(
+      process.env.CHROME_DRIVER_PATH
+    )
+
+    //Don't forget to add these for heroku
+    options.addArguments('--headless')
+    options.addArguments('--disable-gpu')
+    options.addArguments('--no-sandbox')
+    const webDriver = await new Builder()
+      .forBrowser(type)
+      .setChromeOptions(options)
+      .setChromeService(serviceBuilder)
+      .build()
+
     // await webDriver.manage().window().setRect({ x: -100000, y: 100000 })
 
     return webDriver

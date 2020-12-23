@@ -18,8 +18,6 @@ module.exports = new (class AuthHelper {
       { name: 'Password', value: password }
     ]
 
-    console.log(username, password)
-
     for (const inputField of listField) {
       await DriverHelper.fillInInputById({
         webDriver,
