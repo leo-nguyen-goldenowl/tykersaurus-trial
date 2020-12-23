@@ -9,7 +9,7 @@ module.exports = new (class DriverHelper {
   async openBrowser({ type = DriverConstant.browser.CHROME }) {
     let options = new chrome.Options()
     options.setChromeBinaryPath(process.env.CHROME_BINARY_PATH)
-    let serviceBuilder = new chrome.ServiceBuilder(process.env.CHROME_DRIVER_PATH)
+    let serviceBuilder = new chrome.ServiceBuilder(process.env.CHROMEDRIVER_PATH)
 
     options.addArguments('--headless')
     options.addArguments('--disable-gpu')
