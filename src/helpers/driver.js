@@ -1,15 +1,12 @@
 const { Builder, By } = require('selenium-webdriver')
 const { driver: DriverConstant } = require('../constants')
-
+const chrome = require('selenium-webdriver/chrome')
 module.exports = new (class DriverHelper {
   /**
    * Open browser (Chrome, Firefox)
    * @param {string} type - default to Chrome Browser, options chrome/firefox
    */
   async openBrowser({ type = DriverConstant.browser.CHROME }) {
-    require('../../chromedriver')
-    const chrome = require('selenium-webdriver/chrome')
-
     let options = new chrome.Options()
     options.setChromeBinaryPath(process.env.CHROME_BINARY_PATH)
     let serviceBuilder = new chrome.ServiceBuilder(
