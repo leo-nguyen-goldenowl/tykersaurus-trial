@@ -7,19 +7,26 @@ module.exports = new (class DriverHelper {
    * @param {string} type - default to Chrome Browser, options chrome/firefox
    */
   async openBrowser({ type = DriverConstant.browser.CHROME }) {
-    let options = new chrome.Options()
-    options.setChromeBinaryPath(process.env.CHROME_BINARY_PATH)
-    let serviceBuilder = new chrome.ServiceBuilder(process.env.CHROMEDRIVER_PATH)
+    let options, serviceBuilder
+    let webDriver
 
-    options.addArguments('--headless')
-    options.addArguments('--disable-gpu')
-    options.addArguments('--no-sandbox')
+    if (type === DriverConstant.browser.CHROME) {
+      options = new chrome.Options()
+      options.setChromeBinaryPath(process.env.CHROME_BINARY_PATH)
+      serviceBuilder = new chrome.ServiceBuilder(process.env.CHROMEDRIVER_PATH)
 
-    let webDriver = await new Builder()
-      .forBrowser(type)
-      .setChromeOptions(options)
-      .setChromeService(serviceBuilder)
-      .build()
+      if (process.env.NODE_ENV === 'production') {
+        options.addArguments('--headless')
+        options.addArguments('--disable-gpu')
+        options.addArguments('--no-sandbox')
+      }
+
+      webDriver = await new Builder()
+        .forBrowser(type)
+        .setChromeOptions(options)
+        .setChromeService(serviceBuilder)
+        .build()
+    }
 
     return webDriver
   }
