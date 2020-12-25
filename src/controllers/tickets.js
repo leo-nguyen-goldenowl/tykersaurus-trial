@@ -1,4 +1,4 @@
-// const { By, until } = require('selenium-webdriver')
+const { By, until } = require('selenium-webdriver')
 // const moment = require('moment')
 const { validationResult } = require('express-validator')
 const { driver } = require('../constants')
@@ -64,29 +64,33 @@ module.exports = new (class TicketController {
         }
       })
 
-      // const containerTeeTime = await webDriver.wait(
-      //   until.elementLocated(By.className('ant-table-tbody'))
-      // )
+      const containerTeeTime = await webDriver.wait(
+        until.elementLocated(By.className('ant-table-tbody'))
+      )
 
-      // await webDriver.manage().setTimeouts({ implicit: 20000 })
-      // const listTeeTime = await containerTeeTime.findElements(
-      //   By.className('ant-table-row-level-0')
-      // )
+      await webDriver.manage().setTimeouts({ implicit: 20000 })
+      const listTeeTimeElement = await containerTeeTime.findElements(
+        By.className('ant-table-row-level-0')
+      )
 
-      // for (let teeTime of listTeeTime) {
-      //   console.log(
-      //     await (
-      //       await teeTime.findElement(
-      //         By.className('ant-table-row-cell-break-word')
-      //       )
-      //     ).getText()
-      //   )
-      // }
+      const listTeeTime = []
+      for (let teeTime of listTeeTimeElement) {
+        listTeeTime.push(
+          await (
+            await teeTime.findElement(
+              By.className('ant-table-row-cell-break-word')
+            )
+          ).getText()
+        )
+      }
 
       const response = generateResponse({
         statusSuccess: true,
         statusCode   : 200,
-        message      : 'Search course successfully!!!'
+        message      : 'Search course successfully!!!',
+        result       : {
+          listTeeTime
+        }
       })
       return res.json(response)
     } catch (error) {
