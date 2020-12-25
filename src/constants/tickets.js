@@ -30,6 +30,7 @@ const listValidListCriteria = {
   middle: {
     [session.MORNING]: {
       player: {
+        2: true,
         3: true,
         4: true
       },
@@ -40,6 +41,7 @@ const listValidListCriteria = {
     },
     [session.AFTERNOON]: {
       player: {
+        2: true,
         3: true,
         4: true
       },

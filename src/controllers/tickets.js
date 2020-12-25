@@ -5,7 +5,7 @@ const { driver } = require('../constants')
 const { DriverHelper, generateResponse } = require('../helpers')
 const { searchCourse } = require('../helpers/tickets')
 const { loginWithDefaultAccount } = require('./auth')
-const { tickets } = require('../constants')
+// const { tickets } = require('../constants')
 
 module.exports = new (class TicketController {
   /**
@@ -22,20 +22,20 @@ module.exports = new (class TicketController {
       }
 
       const dateISOString = new Date(date)
-      const dayOfDate = dateISOString.getDay()
-      const { listValidListCriteria } = tickets
-      const optionListCriteria =
-        dayOfDate > 0 && dayOfDate < 5
-          ? 'head'
-          : dayOfDate === 5
-            ? 'middle'
-            : 'tail'
+      // const dayOfDate = dateISOString.getDay()
+      // const { listValidListCriteria } = tickets
+      // const optionListCriteria =
+      //   dayOfDate > 0 && dayOfDate < 5
+      //     ? 'head'
+      //     : dayOfDate === 5
+      //       ? 'middle'
+      //       : 'tail'
 
-      const checkListCritera =
-        listValidListCriteria[optionListCriteria][session]
-      const isValidPlayerAndHole =
-        checkListCritera['player'][player] && checkListCritera['hole'][hole]
-
+      // const checkListCritera =
+      //   listValidListCriteria[optionListCriteria][session]
+      // const isValidPlayerAndHole =
+      //   checkListCritera['player'][player] && checkListCritera['hole'][hole]
+      // console.log(isValidPlayerAndHole)
       /**
        * TODO: check valid date
        */
@@ -43,9 +43,9 @@ module.exports = new (class TicketController {
       // const todaySevenAM = new Date(`${today} 07:00`)
       // const diffMinutes = moment().diff(moment(todaySevenAM), 'minutes') < 0
 
-      if (!isValidPlayerAndHole) {
-        return res.status(400).send({ errors: [{ msg: 'Invalid criteria' }] })
-      }
+      // if (!isValidPlayerAndHole) {
+      //   return res.status(400).send({ errors: [{ msg: 'Invalid criteria' }] })
+      // }
 
       const webDriver = await DriverHelper.openBrowser({
         type: driver.browser.CHROME
