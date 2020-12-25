@@ -1,4 +1,4 @@
-const { By, until } = require('selenium-webdriver')
+// const { By, until } = require('selenium-webdriver')
 // const moment = require('moment')
 const { validationResult } = require('express-validator')
 const { driver } = require('../constants')
@@ -6,6 +6,7 @@ const { DriverHelper, generateResponse } = require('../helpers')
 const { searchCourse } = require('../helpers/tickets')
 const { loginWithDefaultAccount } = require('./auth')
 const { tickets } = require('../constants')
+
 module.exports = new (class TicketController {
   /**
    * Booking with default account
@@ -13,7 +14,7 @@ module.exports = new (class TicketController {
    * @param {Express.Response} res
    */
   async bookingWithDefaultAccount(req, res) {
-    const { date, course, session, player, hole, teeTime } = req.body
+    const { date, course, session, player, hole } = req.body
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
@@ -63,26 +64,24 @@ module.exports = new (class TicketController {
         }
       })
 
-      const containerTeeTime = await webDriver.wait(
-        until.elementLocated(By.className('ant-table-tbody'))
-      )
+      // const containerTeeTime = await webDriver.wait(
+      //   until.elementLocated(By.className('ant-table-tbody'))
+      // )
 
-      await webDriver.manage().setTimeouts({ implicit: 20000 })
-      const listTeeTime = await containerTeeTime.findElements(
-        By.className('ant-table-row-level-0')
-      )
+      // await webDriver.manage().setTimeouts({ implicit: 20000 })
+      // const listTeeTime = await containerTeeTime.findElements(
+      //   By.className('ant-table-row-level-0')
+      // )
 
-      for (let teeTime of listTeeTime) {
-        console.log(
-          await (
-            await teeTime.findElement(
-              By.className('ant-table-row-cell-break-word')
-            )
-          ).getText()
-        )
-      }
-
-      console.log('tee time', teeTime)
+      // for (let teeTime of listTeeTime) {
+      //   console.log(
+      //     await (
+      //       await teeTime.findElement(
+      //         By.className('ant-table-row-cell-break-word')
+      //       )
+      //     ).getText()
+      //   )
+      // }
 
       const response = generateResponse({
         statusSuccess: true,

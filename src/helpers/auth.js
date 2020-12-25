@@ -19,13 +19,13 @@ module.exports = new (class AuthHelper {
     ]
 
     for (const inputField of listField) {
-      await DriverHelper.fillInInputById({
+      await DriverHelper.fillInElementById({
         webDriver,
         inputField
       })
     }
 
-    await DriverHelper.clickInputByClassname({
+    await DriverHelper.clickElementByClassname({
       webDriver,
       name: 'antd-pro-login-submit'
     })

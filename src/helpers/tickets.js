@@ -1,6 +1,5 @@
-const { By, until } = require('selenium-webdriver')
 const moment = require('moment')
-
+const DriverHelper = require('./driver')
 module.exports = new (class TicketHelper {
   /**
    * Search course
@@ -14,62 +13,66 @@ module.exports = new (class TicketHelper {
   async searchCourse({ webDriver, listCriteria }) {
     const { date, course, session, player, hole } = listCriteria
 
-    // Fire course select and set value
-    await webDriver
-      .wait(until.elementLocated(By.className('ant-select-selection--single')))
-      .click()
-    const containerCourse = await webDriver.wait(
-      until.elementLocated(By.className('ant-select-dropdown--single'))
+    // Find course select and set value
+    await DriverHelper.clickWaitUntilElementByClassname({
+      webDriver,
+      name: 'ant-select-selection--single'
+    })
+    const optionUnSelectedCourse = await DriverHelper.findElementByXpathInContainerByClassName(
+      {
+        webDriver,
+        name: {
+          container: 'ant-select-dropdown--single',
+          element  : 'li[@aria-selected="false"]'
+        }
+      }
     )
-    const elementCourseUnSelected = await containerCourse.findElement(
-      By.xpath('//li[@aria-selected="false"]')
-    )
-    if ((await elementCourseUnSelected.getText()) === course) {
-      await elementCourseUnSelected.click()
+    if ((await optionUnSelectedCourse.getText()) === course) {
+      await optionUnSelectedCourse.click()
     } else {
-      await containerCourse
-        .findElement(By.xpath('//li[@aria-selected="true"]'))
-        .click()
+      await DriverHelper.clickElementByXpathInContainerByClassName({
+        webDriver,
+        name: {
+          container: 'ant-select-dropdown--single',
+          element  : 'li[@aria-selected="true"]'
+        }
+      })
     }
 
-    // Fire date input and set value
-    await webDriver
-      .wait(until.elementLocated(By.className('ant-calendar-picker-input')))
-      .click()
-    await webDriver
-      .findElement(By.xpath(`//td[@title="${moment(date).format('LL')}"]`))
-      .click()
+    // Find date input and set value
+    await DriverHelper.clickWaitUntilElementByClassname({
+      webDriver,
+      name: 'ant-calendar-picker-input'
+    })
+    await DriverHelper.clickElementByXpath({
+      webDriver,
+      name: `td[@title="${moment(date).format('LL')}"]`
+    })
 
-    // Fire session input and set value
-    const containerSession = await webDriver.wait(
-      until.elementLocated(By.id('timeArr'))
-    )
-    await containerSession
-      .findElement(By.xpath(`//input[@value="${session}"]`))
-      .click()
+    const listInputById = [
+      { container: 'timeArr', element: `input[@value="${session}"]` },
+      { container: 'Pax', element: `input[@value="${player}"]` },
+      { container: 'holeno', element: `input[@value="${hole}"]` }
+    ]
 
-    // Fire player input and set value
-    const containerPlayer = await webDriver.wait(
-      until.elementLocated(By.id('Pax'))
-    )
-    await containerPlayer
-      .findElement(By.xpath(`//input[@value="${player}"]`))
-      .click()
+    // Fill in value for session, player, hole
+    for (let inputById of listInputById) {
+      await DriverHelper.clickElementByXpathInContainerById({
+        webDriver,
+        name: {
+          container: inputById.container,
+          element  : inputById.element
+        }
+      })
+    }
 
-    // Fire hole input and set value
-    const containerHole = await webDriver.wait(
-      until.elementLocated(By.id('holeno'))
-    )
-    await containerHole
-      .findElement(By.xpath(`//input[@value="${hole}"]`))
-      .click()
-
-    // Fire search button and set click
-    const containerForm = await webDriver.wait(
-      until.elementLocated(By.className('ant-form-horizontal'))
-    )
-    await containerForm
-      .findElement(By.xpath('//button[@type="submit"]'))
-      .click()
+    // Fire search button
+    await DriverHelper.clickElementByXpathInContainerByClassName({
+      webDriver,
+      name: {
+        container: 'ant-form-horizontal',
+        element  : 'button[@type="submit"]'
+      }
+    })
   }
 })()
