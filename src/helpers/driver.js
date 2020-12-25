@@ -1,14 +1,32 @@
-const { Builder, By } = require('selenium-webdriver')
+const { Builder, By, until } = require('selenium-webdriver')
 const { driver: DriverConstant } = require('../constants')
-
+const chrome = require('selenium-webdriver/chrome')
 module.exports = new (class DriverHelper {
   /**
    * Open browser (Chrome, Firefox)
    * @param {string} type - default to Chrome Browser, options chrome/firefox
    */
   async openBrowser({ type = DriverConstant.browser.CHROME }) {
-    const webDriver = await new Builder().forBrowser(type).build()
-    // await webDriver.manage().window().setRect({ x: -100000, y: 100000 })
+    let options, serviceBuilder
+    let webDriver
+
+    if (type === DriverConstant.browser.CHROME) {
+      options = new chrome.Options()
+      options.setChromeBinaryPath(process.env.CHROME_BINARY_PATH)
+      serviceBuilder = new chrome.ServiceBuilder(process.env.CHROMEDRIVER_PATH)
+
+      if (process.env.NODE_ENV === 'production') {
+        options.addArguments('--headless')
+        options.addArguments('--disable-gpu')
+        options.addArguments('--no-sandbox')
+      }
+
+      webDriver = await new Builder()
+        .forBrowser(type)
+        .setChromeOptions(options)
+        .setChromeService(serviceBuilder)
+        .build()
+    }
 
     return webDriver
   }
@@ -27,17 +45,93 @@ module.exports = new (class DriverHelper {
    * @param {Object} webDriver
    * @param {{ name: string, value: string}} inputField
    */
-  async fillInInputById({ webDriver, inputField }) {
+  async fillInElementById({ webDriver, inputField }) {
     const { name, value } = inputField
     await webDriver.findElement(By.id(name)).sendKeys(value)
   }
 
   /**
+   * Find a element in container which was find by Classname(container), Xpath(Element)
+   * @param {Object} webDriver
+   * @param {container: string, element: string} name
+   */
+  async findElementByXpathInContainerByClassName({ webDriver, name }) {
+    const { container: containerName, element: elementName } = name
+
+    const container = await webDriver.wait(
+      until.elementLocated(By.className(containerName))
+    )
+    const element = await container.findElement(By.xpath(`//${elementName}`))
+
+    return element
+  }
+
+  /**
+   * Find a element with wait...until... which was find by Xpath
+   * @param {Object} webDriver
+   * @param {container: string, element: string} name
+   */
+  async findElementByXpathInContainerById({ webDriver, name }) {
+    const { container: containerName, element: elementName } = name
+
+    const container = await webDriver.wait(
+      until.elementLocated(By.id(containerName))
+    )
+    const element = await container.findElement(By.xpath(`//${elementName}`))
+
+    return element
+  }
+
+  /**
    * Click a element which was find by Classname
    * @param {Object} webDriver
-   * @param {string} urlWebsite
+   * @param {string} name
    */
-  async clickInputByClassname({ webDriver, name }) {
+  async clickElementByClassname({ webDriver, name }) {
     await webDriver.findElement(By.className(name)).click()
+  }
+
+  /**
+   * Click a element with wait...until... which was find by Classname
+   * @param {Object} webDriver
+   * @param {string} name
+   */
+  async clickWaitUntilElementByClassname({ webDriver, name }) {
+    await webDriver.wait(until.elementLocated(By.className(name))).click()
+  }
+
+  /**
+   * Click a element with wait...until... which was find by Classname
+   * @param {Object} webDriver
+   * @param {string} name
+   */
+  async clickElementByXpath({ webDriver, name }) {
+    await webDriver.findElement(By.xpath(`//${name}`)).click()
+  }
+
+  /**
+   * Click a element with wait...until... which was find by Id
+   * @param {Object} webDriver
+   * @param {container: string, element: string} name
+   */
+  async clickElementByXpathInContainerById({ webDriver, name }) {
+    const element = await this.findElementByXpathInContainerById({
+      webDriver,
+      name
+    })
+    await element.click()
+  }
+
+  /**
+   * Click a element with wait...until... which was find by Xpath
+   * @param {Object} webDriver
+   * @param {container: string, element: string} name
+   */
+  async clickElementByXpathInContainerByClassName({ webDriver, name }) {
+    const element = await this.findElementByXpathInContainerByClassName({
+      webDriver,
+      name
+    })
+    await element.click()
   }
 })()

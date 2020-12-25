@@ -1,3 +1,4 @@
 const driver = require('./driver')
+const tickets = require('./tickets')
 
-module.exports = { driver }
+module.exports = { driver, tickets }
