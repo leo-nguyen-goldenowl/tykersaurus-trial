@@ -1,5 +1,7 @@
 const moment = require('moment')
+const { By } = require('selenium-webdriver')
 const DriverHelper = require('./driver')
+const { time } = require('../utils')
 module.exports = new (class TicketHelper {
   /**
    * Search course
@@ -73,6 +75,92 @@ module.exports = new (class TicketHelper {
         container: 'ant-form-horizontal',
         element  : 'button[@type="submit"]'
       }
+    })
+  }
+
+  async findCourseByTeeTimeRange({ webDriver, teeTimeRange }) {
+    const containerTeeTime = await DriverHelper.findElementWaitUntilByClassName(
+      { webDriver, name: 'ant-table-tbody' }
+    )
+
+    await webDriver.manage().setTimeouts({ implicit: 10000 })
+
+    let listElementCourseWithTeeTime = []
+
+    const listItemPagination = await DriverHelper.findElementsByClassNameInContainerByClassName(
+      {
+        webDriver,
+        name: {
+          container: 'ant-table-pagination',
+          element  : 'ant-pagination-item'
+        }
+      }
+    )
+
+    for (let itemPagination of listItemPagination) {
+      await itemPagination.getText()
+      await itemPagination.click()
+
+      const listTeeTimeElementCurrent = await containerTeeTime.findElements(
+        By.className('ant-table-row-level-0')
+      )
+      const { from: fromTeeTime, to: toTeeTime } = teeTimeRange
+
+      for (let teeTime of listTeeTimeElementCurrent) {
+        const teetimeText = await (
+          await teeTime.findElement(
+            By.className('ant-table-row-cell-break-word')
+          )
+        ).getText()
+
+        const currentTeeTime = time.convertTeeTimeToMinute(teetimeText)
+
+        if (
+          currentTeeTime >= time.convertTeeTimeToMinute(fromTeeTime) &&
+          currentTeeTime <= time.convertTeeTimeToMinute(toTeeTime)
+        )
+          listElementCourseWithTeeTime.push({
+            elementPage  : itemPagination,
+            elementCourse: teeTime,
+            index        : time.convertTeeTimeToMinute(teetimeText)
+          })
+      }
+
+      // Wait for nexting page
+      await webDriver.manage().setTimeouts({ implicit: 5000 })
+
+      return listElementCourseWithTeeTime.sort((x, y) => x.index > y.index)[0]
+    }
+  }
+
+  async bookCourse({ webDriver, courseByTeeTimeRange }) {
+    await courseByTeeTimeRange['elementPage'].click()
+    await (
+      await courseByTeeTimeRange['elementCourse'].findElement(
+        By.className('ant-btn-primary')
+      )
+    ).click()
+
+    const footerModalBooking = await DriverHelper.findElementByClassNameInContainerByClassName(
+      {
+        webDriver,
+        name: {
+          container: 'ant-modal-content',
+          element  : 'ant-modal-footer'
+        }
+      }
+    )
+
+    // click next invite
+    await DriverHelper.clickElementByClassnameInContainer({
+      container: footerModalBooking,
+      name     : 'ant-btn-primary'
+    })
+
+    // click next info
+    await DriverHelper.clickElementByClassnameInContainer({
+      container: footerModalBooking,
+      name     : 'ant-btn-primary'
     })
   }
 })()

@@ -37,17 +37,40 @@ module.exports = new (class DriverHelper {
    * @param {string} urlWebsite
    */
   async connectWebsite({ webDriver, urlWebsite }) {
-    await webDriver.get(urlWebsite)
+    return webDriver.get(urlWebsite)
   }
 
   /**
-   * Fill in a input which was find by Id
+   * Find a element wait..until... by Classname
    * @param {Object} webDriver
-   * @param {{ name: string, value: string}} inputField
+   * @param {string} urlWebsite
    */
-  async fillInElementById({ webDriver, inputField }) {
-    const { name, value } = inputField
-    await webDriver.findElement(By.id(name)).sendKeys(value)
+  async findElementWaitUntilByClassName({ webDriver, name }) {
+    return webDriver.wait(until.elementLocated(By.className(name)))
+  }
+
+  /**
+   * Find elements in container which was find by Classname(container), Classname(element)
+   * @param {Object} webDriver
+   * @param {container: string, element: string} name
+   */
+  async findElementsByClassNameInContainerByClassName({ webDriver, name }) {
+    const { container: containerName, element: elementName } = name
+    const container = await webDriver.findElement(By.className(containerName))
+
+    return container.findElements(By.className(elementName))
+  }
+
+  /**
+   * Find a element in container which was find by Classname(container), Classname(element)
+   * @param {Object} webDriver
+   * @param {container: string, element: string} name
+   */
+  async findElementByClassNameInContainerByClassName({ webDriver, name }) {
+    const { container: containerName, element: elementName } = name
+    const container = await webDriver.findElement(By.className(containerName))
+
+    return container.findElement(By.className(elementName))
   }
 
   /**
@@ -61,9 +84,8 @@ module.exports = new (class DriverHelper {
     const container = await webDriver.wait(
       until.elementLocated(By.className(containerName))
     )
-    const element = await container.findElement(By.xpath(`//${elementName}`))
 
-    return element
+    return container.findElement(By.xpath(`//${elementName}`))
   }
 
   /**
@@ -77,9 +99,7 @@ module.exports = new (class DriverHelper {
     const container = await webDriver.wait(
       until.elementLocated(By.id(containerName))
     )
-    const element = await container.findElement(By.xpath(`//${elementName}`))
-
-    return element
+    return container.findElement(By.xpath(`//${elementName}`))
   }
 
   /**
@@ -88,7 +108,7 @@ module.exports = new (class DriverHelper {
    * @param {string} name
    */
   async clickElementByClassname({ webDriver, name }) {
-    await webDriver.findElement(By.className(name)).click()
+    return webDriver.findElement(By.className(name)).click()
   }
 
   /**
@@ -97,7 +117,7 @@ module.exports = new (class DriverHelper {
    * @param {string} name
    */
   async clickWaitUntilElementByClassname({ webDriver, name }) {
-    await webDriver.wait(until.elementLocated(By.className(name))).click()
+    return webDriver.wait(until.elementLocated(By.className(name))).click()
   }
 
   /**
@@ -106,7 +126,7 @@ module.exports = new (class DriverHelper {
    * @param {string} name
    */
   async clickElementByXpath({ webDriver, name }) {
-    await webDriver.findElement(By.xpath(`//${name}`)).click()
+    return webDriver.findElement(By.xpath(`//${name}`)).click()
   }
 
   /**
@@ -119,7 +139,7 @@ module.exports = new (class DriverHelper {
       webDriver,
       name
     })
-    await element.click()
+    return element.click()
   }
 
   /**
@@ -132,6 +152,25 @@ module.exports = new (class DriverHelper {
       webDriver,
       name
     })
-    await element.click()
+    return element.click()
+  }
+
+  /**
+   * Click a element which was find by Classname in container
+   * @param {Object} webDriver
+   * @param {string} name
+   */
+  async clickElementByClassnameInContainer({ container, name }) {
+    return container.findElement(By.className(name)).click()
+  }
+
+  /**
+   * Fill in a input which was find by Id
+   * @param {Object} webDriver
+   * @param {{ name: string, value: string}} inputField
+   */
+  async fillInElementById({ webDriver, inputField }) {
+    const { name, value } = inputField
+    return webDriver.findElement(By.id(name)).sendKeys(value)
   }
 })()

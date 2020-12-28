@@ -1,11 +1,14 @@
-const { By, until } = require('selenium-webdriver')
 // const moment = require('moment')
 const { validationResult } = require('express-validator')
 const { driver } = require('../constants')
 const { DriverHelper, generateResponse } = require('../helpers')
-const { searchCourse } = require('../helpers/tickets')
+const {
+  searchCourse,
+  findCourseByTeeTimeRange,
+  bookCourse
+} = require('../helpers/tickets')
+const { convertTeeTimeToMinute } = require('../utils/time')
 const { loginWithDefaultAccount } = require('./auth')
-// const { tickets } = require('../constants')
 
 module.exports = new (class TicketController {
   /**
@@ -14,11 +17,20 @@ module.exports = new (class TicketController {
    * @param {Express.Response} res
    */
   async bookingWithDefaultAccount(req, res) {
-    const { date, course, session, player, hole } = req.body
+    const { date, course, session, player, hole, teeTimeRange } = req.body
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
         return res.status(400).send(errors)
+      }
+
+      const { from: fromTeeTime, to: toTeeTime } = teeTimeRange
+      if (
+        convertTeeTimeToMinute(fromTeeTime) > convertTeeTimeToMinute(toTeeTime)
+      ) {
+        return res
+          .status(400)
+          .send({ errors: [{ msg: 'Invalid time range' }] })
       }
 
       const dateISOString = new Date(date)
@@ -64,38 +76,46 @@ module.exports = new (class TicketController {
         }
       })
 
-      const containerTeeTime = await webDriver.wait(
-        until.elementLocated(By.className('ant-table-tbody'))
-      )
+      const courseByTeeTimeRange = await findCourseByTeeTimeRange({
+        webDriver,
+        teeTimeRange
+      })
 
-      await webDriver.manage().setTimeouts({ implicit: 20000 })
-      const listTeeTimeElement = await containerTeeTime.findElements(
-        By.className('ant-table-row-level-0')
-      )
-
-      const listTeeTime = []
-      for (let teeTime of listTeeTimeElement) {
-        listTeeTime.push(
-          await (
-            await teeTime.findElement(
-              By.className('ant-table-row-cell-break-word')
-            )
-          ).getText()
-        )
+      if (!courseByTeeTimeRange) {
+        const response = generateResponse({
+          statusSuccess: false,
+          statusCode   : 200,
+          message      : 'No slots available within time range!!!'
+        })
+        return res.json(response)
+      } else {
+        await bookCourse({ webDriver, courseByTeeTimeRange })
       }
 
       const response = generateResponse({
         statusSuccess: true,
         statusCode   : 200,
-        message      : 'Search course successfully!!!',
-        result       : {
-          listTeeTime
-        }
+        message      : 'Ready to book now!!!'
       })
       return res.json(response)
     } catch (error) {
       console.log(error)
-      res.status(500).json({ msg: 'Server error...' })
+
+      if (
+        error.name === 'NoSuchElementError' &&
+        error.message ===
+          'no such element: Unable to locate element: {"method":"css selector","selector":".ant-table-pagination"}\n  (Session info: chrome=87.0.4280.88)'
+      ) {
+        const response = generateResponse({
+          statusSuccess: true,
+          statusCode   : 200,
+          message      : "Don't have any slots for booking!!!"
+        })
+        return res.json(response)
+      }
+      res.status(500).json({
+        msg: 'Server error...'
+      })
     }
   }
 })()
