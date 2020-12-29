@@ -103,7 +103,6 @@ module.exports = new (class TicketController {
       })
       return res.json(response)
     } catch (error) {
-      console.log(error)
       if (
         error.name === 'NoSuchElementError' &&
         (error.message.includes('.ant-table-pagination') ||

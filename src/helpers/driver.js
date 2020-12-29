@@ -28,7 +28,9 @@ module.exports = new (class DriverHelper {
         .build()
     }
 
-    webDriver.manage().setTimeouts({ script: null })
+    await webDriver
+      .manage()
+      .setTimeouts({ script: null })
 
     return webDriver
   }
