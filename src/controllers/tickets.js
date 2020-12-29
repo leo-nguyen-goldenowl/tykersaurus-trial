@@ -67,7 +67,7 @@ module.exports = new (class TicketController {
 
       if (checkSearch === false) {
         const response = generateResponse({
-          statusSuccess: true,
+          statusSuccess: false,
           statusCode   : 200,
           message      : "Don't have any slots for booking!!!"
         })
@@ -103,7 +103,7 @@ module.exports = new (class TicketController {
           error.message.includes(`input[@value="${hole}"]`))
       ) {
         const response = generateResponse({
-          statusSuccess: true,
+          statusSuccess: false,
           statusCode   : 200,
           message      : "Don't have any slots for booking!!!"
         })
