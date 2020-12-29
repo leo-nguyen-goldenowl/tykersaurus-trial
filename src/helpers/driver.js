@@ -28,7 +28,7 @@ module.exports = new (class DriverHelper {
         .build()
     }
 
-    webDriver.manage().setTimeouts({ pageLoad: 300000000 })
+    webDriver.manage().setTimeouts({ pageLoad: 30000 })
 
     return webDriver
   }
