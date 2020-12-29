@@ -34,6 +34,13 @@ module.exports = new (class DriverHelper {
   }
 
   /**
+   * Quit browser (Chrome, Firefox)
+   */
+  async quitBrowser({ webDriver }) {
+    return webDriver.quit()
+  }
+
+  /**
    * Access website
    * @param {Object} webDriver
    * @param {string} urlWebsite

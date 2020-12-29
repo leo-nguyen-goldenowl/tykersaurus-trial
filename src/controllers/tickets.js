@@ -90,6 +90,8 @@ module.exports = new (class TicketController {
         await bookCourse({ webDriver, courseByTeeTimeRange })
       }
 
+      await DriverHelper.quitBrowser({ webDriver })
+
       const response = generateResponse({
         statusSuccess: true,
         statusCode   : 200,
