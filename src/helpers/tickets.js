@@ -57,25 +57,38 @@ module.exports = new (class TicketHelper {
       { container: 'holeno', element: `input[@value="${hole}"]` }
     ]
 
+    let countInputDisabled = 0
+
     // Fill in value for session, player, hole
     for (let inputById of listInputById) {
-      await DriverHelper.clickElementByXpathInContainerById({
-        webDriver,
-        name: {
-          container: inputById.container,
-          element  : inputById.element
+      const elementInput = await DriverHelper.findElementByXpathInContainerById(
+        {
+          webDriver,
+          name: {
+            container: inputById.container,
+            element  : inputById.element
+          }
         }
-      })
+      )
+      if (await elementInput.getAttribute('disabled')) {
+        countInputDisabled++
+      } else {
+        await elementInput.click()
+      }
     }
 
-    // Fire search button
-    await DriverHelper.clickElementByXpathInContainerByClassName({
-      webDriver,
-      name: {
-        container: 'ant-form-horizontal',
-        element  : 'button[@type="submit"]'
-      }
-    })
+    if (countInputDisabled === 0) {
+      // Fire search button
+      return await DriverHelper.clickElementByXpathInContainerByClassName({
+        webDriver,
+        name: {
+          container: 'ant-form-horizontal',
+          element  : 'button[@type="submit"]'
+        }
+      })
+    } else {
+      return false
+    }
   }
 
   async findCourseByTeeTimeRange({ webDriver, teeTimeRange }) {

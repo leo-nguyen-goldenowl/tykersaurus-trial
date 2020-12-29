@@ -25,39 +25,28 @@ module.exports = new (class TicketController {
       }
 
       const { from: fromTeeTime, to: toTeeTime } = teeTimeRange
-      if (
-        convertTeeTimeToMinute(fromTeeTime) > convertTeeTimeToMinute(toTeeTime)
-      ) {
+      const partOfSession = session.split(',')
+
+      const minuteFromSession = convertTeeTimeToMinute(partOfSession[0])
+      const minuteToSession = convertTeeTimeToMinute(partOfSession[1])
+      const minuteFromTeeTime = convertTeeTimeToMinute(fromTeeTime)
+      const minuteToTeeTime = convertTeeTimeToMinute(toTeeTime)
+
+      const checkPartOfTeeTime = (teeTime) => {
+        return teeTime < minuteFromSession || teeTime > minuteToSession
+      }
+
+      const validTimeRange =
+        minuteFromTeeTime > minuteToTeeTime &&
+        checkPartOfTeeTime(minuteFromTeeTime) &&
+        checkPartOfTeeTime(minuteToTeeTime)
+      if (validTimeRange) {
         return res
           .status(400)
           .send({ errors: [{ msg: 'Invalid time range' }] })
       }
 
       const dateISOString = new Date(date)
-      // const dayOfDate = dateISOString.getDay()
-      // const { listValidListCriteria } = tickets
-      // const optionListCriteria =
-      //   dayOfDate > 0 && dayOfDate < 5
-      //     ? 'head'
-      //     : dayOfDate === 5
-      //       ? 'middle'
-      //       : 'tail'
-
-      // const checkListCritera =
-      //   listValidListCriteria[optionListCriteria][session]
-      // const isValidPlayerAndHole =
-      //   checkListCritera['player'][player] && checkListCritera['hole'][hole]
-      // console.log(isValidPlayerAndHole)
-      /**
-       * TODO: check valid date
-       */
-      // const today = moment().format('L')
-      // const todaySevenAM = new Date(`${today} 07:00`)
-      // const diffMinutes = moment().diff(moment(todaySevenAM), 'minutes') < 0
-
-      // if (!isValidPlayerAndHole) {
-      //   return res.status(400).send({ errors: [{ msg: 'Invalid criteria' }] })
-      // }
 
       const webDriver = await DriverHelper.openBrowser({
         type: driver.browser.CHROME
@@ -65,7 +54,7 @@ module.exports = new (class TicketController {
 
       await loginWithDefaultAccount(webDriver)
 
-      await searchCourse({
+      const checkSearch = await searchCourse({
         webDriver,
         listCriteria: {
           date: dateISOString,
@@ -75,6 +64,15 @@ module.exports = new (class TicketController {
           hole
         }
       })
+
+      if (checkSearch === false) {
+        const response = generateResponse({
+          statusSuccess: true,
+          statusCode   : 200,
+          message      : "Don't have any slots for booking!!!"
+        })
+        return res.json(response)
+      }
 
       const courseByTeeTimeRange = await findCourseByTeeTimeRange({
         webDriver,
@@ -99,12 +97,10 @@ module.exports = new (class TicketController {
       })
       return res.json(response)
     } catch (error) {
-      console.log(error)
-
       if (
         error.name === 'NoSuchElementError' &&
-        error.message ===
-          'no such element: Unable to locate element: {"method":"css selector","selector":".ant-table-pagination"}\n  (Session info: chrome=87.0.4280.88)'
+        (error.message.includes('.ant-table-pagination') ||
+          error.message.includes(`input[@value="${hole}"]`))
       ) {
         const response = generateResponse({
           statusSuccess: true,
