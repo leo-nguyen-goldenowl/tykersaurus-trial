@@ -23,7 +23,13 @@ router.post(
     check('player').isInt({ min: 2, max: 4 }).withMessage('Invalid player'),
     check('hole')
       .isInt()
-      .matches(/\b(?:9|18)\b/)
+      .matches(/\b(?:9|18)\b/),
+    check('teeTimeRange.from')
+      .matches(/^([2][0-3]|[01]?[0-9])([.:][0-5][0-9])?$/)
+      .withMessage('Invalid tee time range (from)'),
+    check('teeTimeRange.to')
+      .matches(/^([2][0-3]|[01]?[0-9])([.:][0-5][0-9])?$/)
+      .withMessage('Invalid tee time range (to)')
   ],
   async (req, res) => {
     return TicketController.bookingWithDefaultAccount(req, res)

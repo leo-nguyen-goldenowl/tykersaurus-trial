@@ -1,11 +1,14 @@
-// const { By, until } = require('selenium-webdriver')
 // const moment = require('moment')
 const { validationResult } = require('express-validator')
 const { driver } = require('../constants')
 const { DriverHelper, generateResponse } = require('../helpers')
-const { searchCourse } = require('../helpers/tickets')
+const {
+  searchCourse,
+  findCourseByTeeTimeRange,
+  bookCourse
+} = require('../helpers/tickets')
+const { convertTeeTimeToMinute } = require('../utils/time')
 const { loginWithDefaultAccount } = require('./auth')
-const { tickets } = require('../constants')
 
 module.exports = new (class TicketController {
   /**
@@ -14,38 +17,36 @@ module.exports = new (class TicketController {
    * @param {Express.Response} res
    */
   async bookingWithDefaultAccount(req, res) {
-    const { date, course, session, player, hole } = req.body
+    const { date, course, session, player, hole, teeTimeRange } = req.body
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
         return res.status(400).send(errors)
       }
 
-      const dateISOString = new Date(date)
-      const dayOfDate = dateISOString.getDay()
-      const { listValidListCriteria } = tickets
-      const optionListCriteria =
-        dayOfDate > 0 && dayOfDate < 5
-          ? 'head'
-          : dayOfDate === 5
-            ? 'middle'
-            : 'tail'
+      const { from: fromTeeTime, to: toTeeTime } = teeTimeRange
+      const partOfSession = session.split(',')
 
-      const checkListCritera =
-        listValidListCriteria[optionListCriteria][session]
-      const isValidPlayerAndHole =
-        checkListCritera['player'][player] && checkListCritera['hole'][hole]
+      const minuteFromSession = convertTeeTimeToMinute(partOfSession[0])
+      const minuteToSession = convertTeeTimeToMinute(partOfSession[1])
+      const minuteFromTeeTime = convertTeeTimeToMinute(fromTeeTime)
+      const minuteToTeeTime = convertTeeTimeToMinute(toTeeTime)
 
-      /**
-       * TODO: check valid date
-       */
-      // const today = moment().format('L')
-      // const todaySevenAM = new Date(`${today} 07:00`)
-      // const diffMinutes = moment().diff(moment(todaySevenAM), 'minutes') < 0
-
-      if (!isValidPlayerAndHole) {
-        return res.status(400).send({ errors: [{ msg: 'Invalid criteria' }] })
+      const checkPartOfTeeTime = (teeTime) => {
+        return teeTime < minuteFromSession || teeTime > minuteToSession
       }
+
+      const validTimeRange =
+        minuteFromTeeTime > minuteToTeeTime &&
+        checkPartOfTeeTime(minuteFromTeeTime) &&
+        checkPartOfTeeTime(minuteToTeeTime)
+      if (validTimeRange) {
+        return res
+          .status(400)
+          .send({ errors: [{ msg: 'Invalid time range' }] })
+      }
+
+      const dateISOString = new Date(date)
 
       const webDriver = await DriverHelper.openBrowser({
         type: driver.browser.CHROME
@@ -53,7 +54,7 @@ module.exports = new (class TicketController {
 
       await loginWithDefaultAccount(webDriver)
 
-      await searchCourse({
+      const checkSearch = await searchCourse({
         webDriver,
         listCriteria: {
           date: dateISOString,
@@ -64,34 +65,53 @@ module.exports = new (class TicketController {
         }
       })
 
-      // const containerTeeTime = await webDriver.wait(
-      //   until.elementLocated(By.className('ant-table-tbody'))
-      // )
+      if (checkSearch === false) {
+        const response = generateResponse({
+          statusSuccess: false,
+          statusCode   : 200,
+          message      : "Don't have any slots for booking!!!"
+        })
+        return res.json(response)
+      }
 
-      // await webDriver.manage().setTimeouts({ implicit: 20000 })
-      // const listTeeTime = await containerTeeTime.findElements(
-      //   By.className('ant-table-row-level-0')
-      // )
+      const courseByTeeTimeRange = await findCourseByTeeTimeRange({
+        webDriver,
+        teeTimeRange
+      })
 
-      // for (let teeTime of listTeeTime) {
-      //   console.log(
-      //     await (
-      //       await teeTime.findElement(
-      //         By.className('ant-table-row-cell-break-word')
-      //       )
-      //     ).getText()
-      //   )
-      // }
+      if (!courseByTeeTimeRange) {
+        const response = generateResponse({
+          statusSuccess: false,
+          statusCode   : 200,
+          message      : 'No slots available within time range!!!'
+        })
+        return res.json(response)
+      } else {
+        await bookCourse({ webDriver, courseByTeeTimeRange })
+      }
 
       const response = generateResponse({
         statusSuccess: true,
         statusCode   : 200,
-        message      : 'Search course successfully!!!'
+        message      : 'Ready to book now!!!'
       })
       return res.json(response)
     } catch (error) {
-      console.log(error)
-      res.status(500).json({ msg: 'Server error...' })
+      if (
+        error.name === 'NoSuchElementError' &&
+        (error.message.includes('.ant-table-pagination') ||
+          error.message.includes(`input[@value="${hole}"]`))
+      ) {
+        const response = generateResponse({
+          statusSuccess: false,
+          statusCode   : 200,
+          message      : "Don't have any slots for booking!!!"
+        })
+        return res.json(response)
+      }
+      res.status(500).json({
+        msg: 'Server error...'
+      })
     }
   }
 })()
