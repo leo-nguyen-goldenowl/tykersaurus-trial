@@ -28,8 +28,6 @@ module.exports = new (class DriverHelper {
         .build()
     }
 
-    await webDriver.manage().setTimeouts({ script: 600000 })
-
     return webDriver
   }
 
