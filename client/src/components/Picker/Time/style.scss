@@ -1,0 +1,37 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.timepicker-custom {
+  padding: 20px 24px;
+  border-radius: 10px;
+  border: solid 1px $hawkes-blue;
+  position: relative;
+  &__label {
+    @include text(SFProDisplay-Regular, 12px, $midnight-moss, null);
+    margin-bottom: 8px;
+  }
+  &__container {
+    @include flex(space-between);
+    @include text(SFProDisplay-Bold, 22px, $midnight-moss, null);
+    span.minus {
+      padding: 0 15px;
+    }
+    .time {
+      position: relative;
+      .icon {
+        position: absolute;
+        top: 50%;
+        right: 1px;
+        transform: translate(0, -50%);
+        z-index: 1;
+      }
+      input {
+        @include text(SFProDisplay-Bold, 22px, $midnight-moss, null);
+        z-index: 2;
+        background: transparent;
+        cursor: pointer;
+      }
+    }
+  }
+}

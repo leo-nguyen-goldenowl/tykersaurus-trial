@@ -1,52 +1,89 @@
 import React from 'react'
+import moment from 'moment'
+import { useMergeState } from 'hooks'
 
 import ButtonDefault from 'components/Button/Default'
 import SelectMini from 'components/Select/Mini'
 import SelectLarge from 'components/Select/Large'
-import Picker from 'components/Picker/Large'
+import DatePicker from 'components/Picker/Date'
+import TimePicker from 'components/Picker/Time'
+
 import './style.scss'
 
 const FormBooking = () => {
+  const listSelectTop = [
+    {
+      label   : 'Session',
+      name    : 'session',
+      listItem: [
+        { name: 'Morning', value: '07:00,11:59' },
+        { name: 'Afternoon', value: '12:00,18:00' }
+      ]
+    },
+    {
+      label   : 'Hole',
+      name    : 'hole',
+      listItem: [
+        { name: '9 Holes', value: 9 },
+        { name: '18 Holes', value: 18 }
+      ]
+    },
+    {
+      label   : 'Quantity of Players',
+      name    : 'player',
+      listItem: [
+        { name: '2 Players', value: 2 },
+        { name: '3 Players', value: 3 },
+        { name: '4 Players', value: 4 }
+      ]
+    }
+  ]
+
+  const [dataBooking, setDataBooking] = useMergeState({
+    session     : '07:00,11:59',
+    hole        : 9,
+    player      : 2,
+    course      : 'Classic Course',
+    date        : moment().format('ddd, MMM DD YYYY'),
+    teeTimeRange: {
+      from: moment(),
+      to  : moment()
+    }
+  })
+
+  const handleChangeDate = (value) => {
+    setDataBooking({ ['date']: moment(value).format('ddd, MMM DD YYYY') })
+  }
+
+  const handleChangeSelect = (e) => {
+    const { name, value } = e.target
+    setDataBooking({ [name]: value })
+  }
+
+  console.log(dataBooking)
+
   return (
     <div className='form-booking'>
       <div className='form-booking__top'>
-        <div className='form-booking__top__item'>
-          <SelectMini
-            label='Session'
-            name='session'
-            listItem={[
-              { name: 'Morning', value: '07:00,11:59' },
-              { name: 'Afternoon', value: '12:00,18:00' }
-            ]}
-          />
-        </div>
-        <div className='form-booking__top__item'>
-          <SelectMini
-            label='Hole'
-            name='hole'
-            listItem={[
-              { name: '9 Holes', value: 9 },
-              { name: '18 Holes', value: 18 }
-            ]}
-          />
-        </div>
-        <div className='form-booking__top__item'>
-          <SelectMini
-            label='Quantity of Players'
-            name='quantityOfPlayers'
-            listItem={[
-              { name: '2 Players', value: 2 },
-              { name: '3 Players', value: 3 },
-              { name: '4 Players', value: 4 }
-            ]}
-          />
-        </div>
+        {listSelectTop.map((select, idx) => (
+          <div className='form-booking__top__item' key={idx}>
+            <SelectMini
+              label={select.label}
+              name={select.name}
+              value={dataBooking[select.name]}
+              listItem={select.listItem}
+              onChange={handleChangeSelect}
+            />
+          </div>
+        ))}
       </div>
       <div className='form-booking__bottom'>
         <div className='form-booking__bottom__item'>
           <SelectLarge
             label='Course'
             name='course'
+            value={dataBooking.course}
+            onChange={handleChangeSelect}
             listItem={[
               { name: 'Classic Course', value: 'Classic Course' },
               {
@@ -57,15 +94,16 @@ const FormBooking = () => {
           />
         </div>
         <div className='form-booking__bottom__item'>
-          <Picker
+          <DatePicker
             label='Calendar'
             name='calendar'
-            value='01/01/2021'
+            value={dataBooking.date}
             type='calendar'
+            onChange={handleChangeDate}
           />
         </div>
         <div className='form-booking__bottom__item'>
-          <Picker label='Time' name='time' type='clock' value='17:18 - 17:30' />
+          <TimePicker value={dataBooking.teeTimeRange} label='Time' />
         </div>
       </div>
       <p className='form-booking__description'>

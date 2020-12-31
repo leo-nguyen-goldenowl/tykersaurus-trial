@@ -28,4 +28,13 @@
       justify-content: center;
     }
   }
+  &__my-booking {
+    padding-top: 226px;
+    padding-bottom: 52px;
+    @include flex(center);
+    &__list {
+      width: calc(100% - 190px);
+      @include flex(center);
+    }
+  }
 }

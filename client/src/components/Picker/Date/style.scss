@@ -1,0 +1,55 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.datepicker-custom {
+  padding: 20px 24px;
+  border-radius: 10px;
+  border: solid 1px $hawkes-blue;
+  position: relative;
+  &__label {
+    @include text(SFProDisplay-Regular, 12px, $midnight-moss, null);
+    margin-bottom: 8px;
+  }
+  &__container {
+    @include flex(space-between, center);
+  }
+  &__value {
+    width: 100%;
+    @include text(SFProDisplay-Bold, 22px, $midnight-moss, null);
+    background: transparent;
+  }
+  &__icon {
+    margin-top: -1px;
+  }
+  .datepicker {
+    width: calc(100% - 55px);
+    position: absolute;
+    z-index: 3;
+    .react-datepicker-wrapper {
+      width: 100%;
+      &__input-container {
+        width: 100%;
+      }
+    }
+    .react-datepicker__triangle {
+      left: 60px !important;
+    }
+    input {
+      width: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
+  .timepicker {
+    position: absolute;
+    opacity: 0;
+    .rc-time-picker {
+      margin-right: 18px;
+      input {
+        cursor: pointer;
+        width: 55px;
+      }
+    }
+  }
+}

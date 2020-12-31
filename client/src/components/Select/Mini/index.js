@@ -2,11 +2,11 @@ import React from 'react'
 
 import './style.scss'
 
-const SelectMini = ({ label, name, listItem }) => {
+const SelectMini = ({ label, name, listItem, onChange, value }) => {
   return (
     <div className='select-mini'>
       <span>{label}:&nbsp;</span>
-      <select name={name}>
+      <select name={name} onChange={onChange} value={value}>
         {listItem.map((item, idx) => (
           <option key={idx} value={item.value}>
             {item.name}

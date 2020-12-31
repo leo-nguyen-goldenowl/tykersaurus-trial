@@ -15,7 +15,11 @@ const DashboardPage = () => {
           <FormBooking />
         </div>
       </div>
-      <MyBooking />
+      <div className='dashboard-page__my-booking'>
+        <div className='dashboard-page__my-booking__list'>
+          <MyBooking />
+        </div>
+      </div>
     </div>
   )
 }

@@ -2,12 +2,12 @@ import React from 'react'
 
 import './style.scss'
 
-const SelectLarge = ({ label, name, listItem }) => {
+const SelectLarge = ({ label, name, listItem, value, onChange }) => {
   return (
     <div className='select-large'>
       <p>{label}</p>
       <div>
-        <select name={name}>
+        <select name={name} value={value} onChange={onChange}>
           {listItem.map((item, idx) => (
             <option key={idx} value={item.value}>
               {item.name}
