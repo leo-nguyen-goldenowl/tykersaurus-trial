@@ -1,0 +1,25 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.header-page {
+  @include flex();
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: calc(100% - 270px);
+  max-width: 1170px;
+  padding: 21px 135px 37px;
+  z-index: 2;
+  &__hello {
+    position: absolute;
+    top: 151px;
+    left: 127px;
+    @include text(SFProDisplay-Regular, 36px, $midnight-moss, 1.44);
+    letter-spacing: 0;
+    span {
+      font-family: SFProDisplay-Bold;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.logo-page {
+  @include flex(null, center);
+  height: 50px;
+  position: relative;
+  &__round {
+    @include square(50px, 50%);
+    background: $white;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, 0);
+    z-index: 1;
+  }
+
+  &__company-name {
+    @include text(SFProDisplay-Bold, 20px, $midnight-moss, null);
+    text-transform: uppercase;
+    z-index: 2;
+  }
+}

@@ -1,0 +1,31 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.dashboard-page {
+  background: $snow;
+  min-height: 100vh;
+  &__book-course {
+    background-image: url("../../assets/images/intro--large.png");
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    height: 600px;
+    .lazy-load-image-background {
+      height: 100%;
+    }
+    &__background {
+      width: 100%;
+      height: 100%;
+    }
+    &__form {
+      width: calc(100% - 190px);
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

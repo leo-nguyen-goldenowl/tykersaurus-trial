@@ -1,0 +1,51 @@
+@import "src/assets/scss/_variables.scss";
+
+@mixin flex(
+  $justify-content: flex-start,
+  $align-items: flex-start,
+  $direction: row
+) {
+  display: flex;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-direction: $direction;
+}
+
+@mixin text($family, $size, $color, $lineHeight) {
+  font-family: $family;
+  font-size: $size;
+  color: $color;
+  line-height: $lineHeight;
+  margin: 0;
+}
+
+@mixin square($size, $radius: 0) {
+  width: $size !important;
+  height: $size;
+  border-radius: $radius;
+}
+
+@mixin button(
+  $padding,
+  $radius,
+  $background,
+  $color,
+  $width: auto,
+  $height: auto,
+  $cursor: pointer
+) {
+  border: none;
+  outline: none;
+  cursor: $cursor;
+  width: $width;
+  height: $height;
+  padding: $padding;
+  border-radius: $radius;
+  background: $background;
+  color: $color;
+}
+
+@mixin select() {
+  border: 0;
+  outline: 0;
+}

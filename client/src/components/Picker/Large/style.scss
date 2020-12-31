@@ -1,0 +1,22 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.picker {
+  padding: 20px 24px;
+  border-radius: 10px;
+  border: solid 1px $hawkes-blue;
+  &__label {
+    @include text(SFProDisplay-Regular, 12px, $midnight-moss, null);
+    margin-bottom: 8px;
+  }
+  div {
+    @include flex(space-between, center);
+    cursor: pointer;
+  }
+  &__value {
+    width: 100%;
+    @include text(SFProDisplay-Bold, 22px, $midnight-moss, null);
+    background: transparent;
+  }
+}
