@@ -19,7 +19,7 @@ const MyBooking = () => {
       </table>
       <div className='my-booking__container'>
         <table className='main'>
-          <thead className=''>
+          <thead className='hide'>
             <tr>
               <th className='my-booking__date'>Date</th>
               <th className='my-booking__tee-time'>Tee time</th>

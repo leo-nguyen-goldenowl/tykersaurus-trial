@@ -1,5 +1,6 @@
 import * as React from 'react'
 // import { Provider } from "react-redux";
+import { isTablet, isBrowser } from 'react-device-detect'
 import { ToastContainer, Flip } from 'react-toastify'
 
 import DashboardPage from 'pages/Dashboard'
@@ -17,7 +18,13 @@ function App() {
         newestOnTop
       />
       <div className='App'>
-        <DashboardPage />
+        {isTablet || isBrowser ? (
+          <DashboardPage />
+        ) : (
+          <div className='not-support-mobile'>
+            <p>Not support on mobile</p>
+          </div>
+        )}
       </div>
     </>
     // </Provider>

@@ -1,3 +1,5 @@
+@import "src/assets/scss/_mixins.scss";
+
 // Font SFProDisplay
 @font-face {
   font-family: SFProDisplay-Regular;
@@ -26,4 +28,13 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.not-support-mobile {
+  height: 100vh;
+  @include flex(center, center);
+  background: $snow;
+  p {
+    @include text(SFProDisplay-Bold, 16px, $midnight-moss, null);
+  }
 }

@@ -31,6 +31,12 @@
   &__my-booking {
     padding-bottom: 52px;
     @include flex(center);
+    @include responsive(small-tablet) {
+      padding-top: 406px;
+    }
+    @include responsive(tablet) {
+      padding-top: 376px;
+    }
     @include responsive(small-desktop) {
       padding-top: 276px;
     }

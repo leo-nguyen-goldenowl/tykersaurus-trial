@@ -4,11 +4,11 @@
 
 .my-booking {
   width: 100%;
-  &__container{
+  &__container {
     width: 100%;
     max-height: 505px;
     overflow-y: scroll;
-    padding-top:12px;
+    padding-top: 12px;
   }
   &__title {
     @include text(SFProDisplay-Bold, 16px, $midnight-moss, null);
@@ -19,6 +19,7 @@
     width: calc(100% - 1px);
     .hide {
       opacity: 0;
+      // display: none;
     }
     th,
     td {
@@ -93,6 +94,9 @@
   }
   table.main {
     margin-top: -82px;
+    @media only screen and (min-width: 601px) and (max-width: 700px) {
+      margin-top: -101px;
+    }
   }
   &__tee-time {
     width: 15%;

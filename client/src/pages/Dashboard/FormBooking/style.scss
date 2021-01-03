@@ -10,15 +10,34 @@
   background-color: $white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   &__top {
-    @include flex();
     margin-bottom: 30px;
+    @include responsive(tablet) {
+      @include flex(null,center);
+    }
+    @include responsive(small-desktop) {
+      @include flex();
+    }
+
     &__item {
       margin-right: 40px;
+      @include multiple-responsive(small-tablet, mobile, small-mobile) {
+        margin-top: 15px;
+        margin-right: 0;
+        &:first-child {
+          margin-top: 0;
+        }
+      }
     }
   }
   &__bottom {
     margin-bottom: 30px;
-    @include responsive(small-desktop) {
+    @include multiple-responsive(
+      small-desktop,
+      tablet,
+      small-tablet,
+      mobile,
+      small-mobile
+    ) {
       @include flex(space-between, center);
       flex-wrap: wrap;
     }
@@ -27,6 +46,14 @@
     }
 
     &__item {
+      @include multiple-responsive(tablet, small-tablet, mobile, small-mobile) {
+        width: 100%;
+        margin-bottom: 30px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
       @include responsive(small-desktop) {
         width: calc(100% / 2 - 15px);
         margin-bottom: 30px;
@@ -52,5 +79,8 @@
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 50%);
+    @include multiple-responsive(small-mobile, mobile, small-tablet) {
+      width: 200px;
+    }
   }
 }
