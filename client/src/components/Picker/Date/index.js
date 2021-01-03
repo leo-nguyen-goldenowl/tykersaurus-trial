@@ -1,14 +1,28 @@
 import React from 'react'
 import DatePicker from 'react-datepicker'
+import moment from 'moment'
+
 import { Img } from 'reusable'
 
 import CalendarIcon from 'assets/images/icons/calendar.svg'
 
 import './style.scss'
 
-const DatePickerCustom = ({ label, value, name,onChange }) => {
+const DatePickerCustom = ({ label, value, name, onChange }) => {
   const IconPicker = CalendarIcon
-  console.log(value)
+
+  const todayMoment = moment()
+  const today = new Date()
+  const maxDate = moment(todayMoment).add(
+    moment(moment()).diff(
+      moment(moment().format('MM/DD/YYYY 7:00'), 'MM-DD-YYYY hh:mm'),
+      'seconds'
+    ) > 0
+      ? 7
+      : 6,
+    'days'
+  )
+
   return (
     <div className='datepicker-custom'>
       <p className='datepicker-custom__label'>{label}</p>
@@ -17,8 +31,8 @@ const DatePickerCustom = ({ label, value, name,onChange }) => {
           <DatePicker
             selected={new Date(value)}
             onChange={(date) => onChange(date)}
-            minDate={new Date()}
-            // maxDate={new Date()}
+            minDate={today}
+            maxDate={new Date(maxDate)}
             showDisabledMonthNavigation
           />
         </div>
@@ -26,7 +40,11 @@ const DatePickerCustom = ({ label, value, name,onChange }) => {
         <p className='datepicker-custom__value' name={name}>
           {value}
         </p>
-        <Img src={IconPicker} effect='opacity' className='datepicker-custom__icon' />
+        <Img
+          src={IconPicker}
+          effect='opacity'
+          className='datepicker-custom__icon'
+        />
       </div>
     </div>
   )

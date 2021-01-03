@@ -17,10 +17,26 @@
     }
   }
   &__bottom {
-    @include flex(space-between);
     margin-bottom: 30px;
+    @include responsive(small-desktop) {
+      @include flex(space-between, center);
+      flex-wrap: wrap;
+    }
+    @include responsive(medium-desktop) {
+      @include flex(space-between);
+    }
+
     &__item {
-      width: calc(100% / 3 - 15px)
+      @include responsive(small-desktop) {
+        width: calc(100% / 2 - 15px);
+        margin-bottom: 30px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      @include responsive(medium-desktop) {
+        width: calc(100% / 3 - 15px);
+      }
     }
   }
   &__description {

@@ -16,7 +16,7 @@
     position: absolute;
     top: 151px;
     left: 127px;
-    @include text(SFProDisplay-Regular, 36px, $midnight-moss, 1.44);
+    @include text(SFProDisplay-Regular, 34px, $midnight-moss, 1.44);
     letter-spacing: 0;
     span {
       font-family: SFProDisplay-Bold;

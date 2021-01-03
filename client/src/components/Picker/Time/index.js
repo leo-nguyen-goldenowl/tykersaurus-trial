@@ -8,7 +8,7 @@ import ClockIcon from 'assets/images/icons/clock.svg'
 
 import './style.scss'
 
-const TimePickerCustom = ({ label, value }) => {
+const TimePickerCustom = ({ label, value, onChange }) => {
   return (
     <div className='timepicker-custom'>
       <p className='timepicker-custom__label'>{label}</p>
@@ -19,6 +19,7 @@ const TimePickerCustom = ({ label, value }) => {
             showSecond={false}
             allowEmpty={false}
             name='from'
+            onChange={(val) => onChange(val, 'from')}
           />
           <Img src={ClockIcon} className='icon' effect='opacity' />
         </div>
@@ -30,6 +31,7 @@ const TimePickerCustom = ({ label, value }) => {
             showSecond={false}
             allowEmpty={false}
             name='to'
+            onChange={(val) => onChange(val, 'to')}
           />
           <Img src={ClockIcon} className='icon' effect='opacity' />
         </div>

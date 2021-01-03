@@ -29,9 +29,15 @@
     }
   }
   &__my-booking {
-    padding-top: 226px;
     padding-bottom: 52px;
     @include flex(center);
+    @include responsive(small-desktop) {
+      padding-top: 276px;
+    }
+    @include responsive(medium-desktop) {
+      padding-top: 226px;
+    }
+
     &__list {
       width: calc(100% - 190px);
       @include flex(center);

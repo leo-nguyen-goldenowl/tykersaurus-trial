@@ -60,7 +60,31 @@ const FormBooking = () => {
     setDataBooking({ [name]: value })
   }
 
-  console.log(dataBooking)
+  const handleChangeTime = (value, type) => {
+    setDataBooking({
+      teeTimeRange: {
+        ...dataBooking.teeTimeRange,
+        [type]: value
+      }
+    })
+  }
+
+  const handleValidDataBooking = () => {
+    const { from: fromTeeTime, to: toTeetime } = dataBooking.teeTimeRange
+
+    return (
+      moment(moment(toTeetime)).diff(moment(moment(fromTeeTime)), 'minutes') >=
+      0
+    )
+  }
+
+  const handleSubmit = () => {
+    if (handleValidDataBooking()) {
+      console.log('Ready to book')
+    } else {
+      console.log('Invalid data')
+    }
+  }
 
   return (
     <div className='form-booking'>
@@ -103,7 +127,11 @@ const FormBooking = () => {
           />
         </div>
         <div className='form-booking__bottom__item'>
-          <TimePicker value={dataBooking.teeTimeRange} label='Time' />
+          <TimePicker
+            value={dataBooking.teeTimeRange}
+            label='Time'
+            onChange={handleChangeTime}
+          />
         </div>
       </div>
       <p className='form-booking__description'>
@@ -114,7 +142,9 @@ const FormBooking = () => {
         his delenit eloquentiam.
       </p>
       <div className='form-booking__btn-submit'>
-        <ButtonDefault type='button'>Book Now</ButtonDefault>
+        <ButtonDefault type='button' onClick={handleSubmit}>
+          Book Now
+        </ButtonDefault>
       </div>
     </div>
   )
