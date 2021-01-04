@@ -1,10 +1,6 @@
 const Receipt = require('../../models/Receipt')
 const { driver } = require('../../constants')
-const {
-  ReceiptHelper,
-  DriverHelper
-  // generateResponse
-} = require('../../helpers')
+const { ReceiptHelper, DriverHelper } = require('../../helpers')
 const {
   searchCourse,
   findCourseByTeeTimeRange,
@@ -25,7 +21,8 @@ const createReceiptInBackgroundJob = async (ticket) => {
     session,
     course,
     player,
-    hole
+    hole,
+    created_at: new Date()
   })
 
   try {
@@ -46,7 +43,12 @@ const createReceiptInBackgroundJob = async (ticket) => {
       checkPartOfTeeTime(minuteFromTeeTime) &&
       checkPartOfTeeTime(minuteToTeeTime)
     if (validTimeRange) {
-      // return res.status(400).send({ errors: [{ msg: 'Invalid time range' }] })
+      receipt.message = 'Invalid time range'
+      await ReceiptHelper.createReceiptWithStatus({
+        ticket: receipt,
+        status: false
+      })
+      await DriverHelper.quitBrowser({ webDriver })
     }
 
     const dateISOString = new Date(date)
@@ -67,12 +69,12 @@ const createReceiptInBackgroundJob = async (ticket) => {
     if (checkSearch === false) {
       await DriverHelper.quitBrowser({ webDriver })
 
-      // const response = generateResponse({
-      //   statusSuccess: false,
-      //   statusCode   : 200,
-      //   message      : "Don't have any slots for booking!!!"
-      // })
-      // return res.json(response)
+      receipt.message = "Don't have any slots for booking!!!"
+      await ReceiptHelper.createReceiptWithStatus({
+        ticket: receipt,
+        status: false
+      })
+      await DriverHelper.quitBrowser({ webDriver })
     }
 
     const courseByTeeTimeRange = await findCourseByTeeTimeRange({
@@ -82,14 +84,14 @@ const createReceiptInBackgroundJob = async (ticket) => {
 
     if (!courseByTeeTimeRange) {
       await DriverHelper.quitBrowser({ webDriver })
-
-      // const response = generateResponse({
-      //   statusSuccess: false,
-      //   statusCode   : 200,
-      //   message      : 'No slots available within time range!!!'
-      // })
-      // return res.json(response)
+      receipt.message = 'No slots available within time range!!!'
+      await ReceiptHelper.createReceiptWithStatus({
+        ticket: receipt,
+        status: false
+      })
+      await DriverHelper.quitBrowser({ webDriver })
     } else {
+      receipt.teeTime = courseByTeeTimeRange['teeTime']
       await bookCourse({ webDriver, courseByTeeTimeRange })
     }
 
@@ -101,10 +103,6 @@ const createReceiptInBackgroundJob = async (ticket) => {
     })
   } catch (error) {
     console.log(error)
-    await ReceiptHelper.createReceiptWithStatus({
-      ticket: receipt,
-      status: false
-    })
 
     if (
       error.name === 'NoSuchElementError' &&
@@ -113,18 +111,16 @@ const createReceiptInBackgroundJob = async (ticket) => {
     ) {
       await DriverHelper.quitBrowser({ webDriver })
 
-      // const response = generateResponse({
-      //   statusSuccess: false,
-      //   statusCode   : 200,
-      //   message      : "Don't have any slots for booking!!!"
-      // })
-      // return res.json(response)
+      receipt.message = "Don't have any slots for booking!!!"
     }
 
     await DriverHelper.quitBrowser({ webDriver })
-    // res.status(500).json({
-    //   msg: 'Server error...'
-    // })
+
+    // receipt.message = 'Server error...'
+    await ReceiptHelper.createReceiptWithStatus({
+      ticket: receipt,
+      status: false
+    })
   }
 }
 

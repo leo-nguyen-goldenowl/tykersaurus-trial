@@ -10,6 +10,7 @@ module.exports = new (class ReceiptHelper {
       player,
       hole,
       teeTime,
+      created_at: new Date(),
       status
     })
 

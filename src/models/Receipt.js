@@ -35,8 +35,10 @@ const ReceiptSchema = new mongoose.Schema({
   },
   created_at: {
     type   : String,
-    require: true,
-    default: new Date()
+    require: true
+  },
+  message: {
+    type: String
   }
 })
 
