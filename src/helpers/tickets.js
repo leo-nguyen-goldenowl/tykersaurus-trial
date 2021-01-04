@@ -137,7 +137,8 @@ module.exports = new (class TicketHelper {
           listElementCourseWithTeeTime.push({
             elementPage  : itemPagination,
             elementCourse: teeTime,
-            index        : time.convertTeeTimeToMinute(teetimeText)
+            index        : time.convertTeeTimeToMinute(teetimeText),
+            teeTime      : teetimeText
           })
       }
 

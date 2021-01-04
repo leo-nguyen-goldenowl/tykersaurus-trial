@@ -1,5 +1,7 @@
 const DriverHelper = require('./driver')
 const AuthHelper = require('./auth')
+const ReceiptHelper = require('./receipt')
+
 /**
  * genereate a response
  * @param {boolean} statusSuccess
@@ -20,4 +22,4 @@ const generateResponse = ({ statusSuccess, statusCode, message, result }) => {
   )
 }
 
-module.exports = { DriverHelper, AuthHelper, generateResponse }
+module.exports = { DriverHelper, AuthHelper, ReceiptHelper, generateResponse }
