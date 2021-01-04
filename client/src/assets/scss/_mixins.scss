@@ -1,0 +1,141 @@
+@import "src/assets/scss/_variables.scss";
+
+$max-middle-mobile-width: 360px;
+$min-tablet-width: 600px;
+$middle-tablet-width: 768px;
+$max-tablet-width: 1024px;
+$min-desktop: 1280px;
+$medium-middle-desktop: 1366px;
+$middle-desktop: 1440px;
+$high-desktop: 1600px;
+
+@mixin responsive($screen) {
+  @if $screen == small-mobile {
+    @media only screen and (max-width: $max-middle-mobile-width) {
+      @content;
+    }
+  }
+  @if $screen == small-mobile-landscape {
+    @media only screen and (max-width: $max-middle-mobile-width) and (orientation: landscape) {
+      @content;
+    }
+  }
+  @if $screen == mobile {
+    @media only screen and (max-width: $min-tablet-width) and (min-width: $max-middle-mobile-width + 1) {
+      @content;
+    }
+  }
+  @if $screen == mobile-landscape {
+    @media only screen and (max-width: $min-tablet-width) and (min-width: $max-middle-mobile-width + 1) and (orientation: landscape) {
+      @content;
+    }
+  }
+  @if $screen == small-tablet {
+    @media only screen and (min-width: $min-tablet-width + 1) and (max-width: $middle-tablet-width - 1) {
+      @content;
+    }
+  }
+  @if $screen == small-tablet-landscape {
+    @media only screen and (min-width: $min-tablet-width + 1) and (max-width: $middle-tablet-width - 1) and (orientation: landscape) {
+      @content;
+    }
+  }
+  @if $screen == tablet {
+    @media only screen and (min-width: $middle-tablet-width) and (max-width: $max-tablet-width - 1) {
+      @content;
+    }
+  }
+  @if $screen == tablet-landscape {
+    @media only screen and (min-width: $middle-tablet-width) and (max-width: $max-tablet-width - 1) and (orientation: landscape) {
+      @content;
+    }
+  }
+  @if $screen == small-desktop {
+    @media only screen and (min-width: $max-tablet-width) {
+      @content;
+    }
+  }
+  @if $screen == medium-desktop {
+    @media only screen and (min-width: $min-desktop) {
+      @content;
+    }
+  }
+  @if $screen == medium-middle-desktop {
+    @media only screen and (min-width: $medium-middle-desktop) {
+      @content;
+    }
+  }
+  @if $screen == large-desktop {
+    @media only screen and (min-width: $middle-desktop) {
+      @content;
+    }
+  }
+  @if $screen == huge-desktop {
+    @media only screen and (min-width: $high-desktop) {
+      @content;
+    }
+  }
+  @if $screen == retina {
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      @content;
+    }
+  }
+}
+
+@mixin multiple-responsive($screens...) {
+  @each $screen in $screens {
+    @include responsive($screen) {
+      @content;
+    }
+  }
+}
+
+@mixin flex(
+  $justify-content: flex-start,
+  $align-items: flex-start,
+  $direction: row
+) {
+  display: flex;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-direction: $direction;
+}
+
+@mixin text($family, $size, $color, $lineHeight) {
+  font-family: $family;
+  font-size: $size;
+  color: $color;
+  line-height: $lineHeight;
+  margin: 0;
+}
+
+@mixin square($size, $radius: 0) {
+  width: $size !important;
+  height: $size;
+  border-radius: $radius;
+}
+
+@mixin button(
+  $padding,
+  $radius,
+  $background,
+  $color,
+  $width: auto,
+  $height: auto,
+  $cursor: pointer
+) {
+  border: none;
+  outline: none;
+  cursor: $cursor;
+  width: $width;
+  height: $height;
+  padding: $padding;
+  border-radius: $radius;
+  background: $background;
+  color: $color;
+}
+
+@mixin select() {
+  border: 0;
+  outline: 0;
+}

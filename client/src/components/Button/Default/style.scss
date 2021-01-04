@@ -1,0 +1,10 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.button-default {
+  @include button(19px 30px, 10px, $midnight-moss, $white);
+  font-size: 22px;
+  font-family: SFProDisplay-Bold;
+  width: 100%;
+}

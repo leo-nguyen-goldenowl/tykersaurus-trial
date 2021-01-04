@@ -32,6 +32,13 @@ module.exports = new (class DriverHelper {
   }
 
   /**
+   * Quit browser (Chrome, Firefox)
+   */
+  async quitBrowser({ webDriver }) {
+    return webDriver.quit()
+  }
+
+  /**
    * Access website
    * @param {Object} webDriver
    * @param {string} urlWebsite
@@ -56,7 +63,9 @@ module.exports = new (class DriverHelper {
    */
   async findElementsByClassNameInContainerByClassName({ webDriver, name }) {
     const { container: containerName, element: elementName } = name
-    const container = await webDriver.findElement(By.className(containerName))
+    const container = await webDriver.wait(
+      until.elementLocated(By.className(containerName))
+    )
 
     return container.findElements(By.className(elementName))
   }
@@ -68,7 +77,9 @@ module.exports = new (class DriverHelper {
    */
   async findElementByClassNameInContainerByClassName({ webDriver, name }) {
     const { container: containerName, element: elementName } = name
-    const container = await webDriver.findElement(By.className(containerName))
+    const container = await webDriver.wait(
+      until.elementLocated(By.className(containerName))
+    )
 
     return container.findElement(By.className(elementName))
   }

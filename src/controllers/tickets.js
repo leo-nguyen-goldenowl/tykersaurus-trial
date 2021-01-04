@@ -18,6 +18,10 @@ module.exports = new (class TicketController {
    */
   async bookingWithDefaultAccount(req, res) {
     const { date, course, session, player, hole, teeTimeRange } = req.body
+    const webDriver = await DriverHelper.openBrowser({
+      type: driver.browser.CHROME
+    })
+
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
@@ -48,10 +52,6 @@ module.exports = new (class TicketController {
 
       const dateISOString = new Date(date)
 
-      const webDriver = await DriverHelper.openBrowser({
-        type: driver.browser.CHROME
-      })
-
       await loginWithDefaultAccount(webDriver)
 
       const checkSearch = await searchCourse({
@@ -66,6 +66,8 @@ module.exports = new (class TicketController {
       })
 
       if (checkSearch === false) {
+        await DriverHelper.quitBrowser({ webDriver })
+
         const response = generateResponse({
           statusSuccess: false,
           statusCode   : 200,
@@ -80,6 +82,8 @@ module.exports = new (class TicketController {
       })
 
       if (!courseByTeeTimeRange) {
+        await DriverHelper.quitBrowser({ webDriver })
+
         const response = generateResponse({
           statusSuccess: false,
           statusCode   : 200,
@@ -89,6 +93,8 @@ module.exports = new (class TicketController {
       } else {
         await bookCourse({ webDriver, courseByTeeTimeRange })
       }
+
+      await DriverHelper.quitBrowser({ webDriver })
 
       const response = generateResponse({
         statusSuccess: true,
@@ -102,6 +108,8 @@ module.exports = new (class TicketController {
         (error.message.includes('.ant-table-pagination') ||
           error.message.includes(`input[@value="${hole}"]`))
       ) {
+        await DriverHelper.quitBrowser({ webDriver })
+
         const response = generateResponse({
           statusSuccess: false,
           statusCode   : 200,
@@ -109,6 +117,8 @@ module.exports = new (class TicketController {
         })
         return res.json(response)
       }
+
+      await DriverHelper.quitBrowser({ webDriver })
       res.status(500).json({
         msg: 'Server error...'
       })

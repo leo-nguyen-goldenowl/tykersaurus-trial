@@ -1,0 +1,37 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.select-mini {
+  position: relative;
+  font-family: SFProDisplay-Medium;
+  font-size: 14px;
+  color: $midnight-moss;
+  @include flex(null, center);
+  span {
+    @include multiple-responsive(small-mobile, mobile, small-tablet) {
+      width: 200px;
+    }
+  }
+  select {
+    @include select();
+    position: relative;
+    font-family: SFProDisplay-Medium;
+    font-size: 14px;
+    color: $midnight-moss;
+    appearance: none;
+    padding-right: 15px;
+    background: transparent;
+    cursor: pointer;
+    z-index: 2;
+    margin-bottom: -0.5px;
+    @include multiple-responsive(small-mobile, mobile, small-tablet) {
+      width: 100%;
+    }
+  }
+  svg {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+  }
+}

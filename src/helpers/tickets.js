@@ -51,6 +51,8 @@ module.exports = new (class TicketHelper {
       name: `td[@title="${moment(date).format('LL')}"]`
     })
 
+    await webDriver.manage().setTimeouts({ implicit: 3000 })
+
     const listInputById = [
       { container: 'timeArr', element: `input[@value="${session}"]` },
       { container: 'Pax', element: `input[@value="${player}"]` },

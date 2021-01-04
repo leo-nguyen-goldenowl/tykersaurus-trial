@@ -1,0 +1,113 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.my-booking {
+  width: 100%;
+  &__container {
+    width: 100%;
+    max-height: 505px;
+    overflow-y: scroll;
+    padding-top: 12px;
+  }
+  &__title {
+    @include text(SFProDisplay-Bold, 16px, $midnight-moss, null);
+  }
+  table {
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    width: calc(100% - 1px);
+    .hide {
+      opacity: 0;
+      // display: none;
+    }
+    th,
+    td {
+      text-align: center;
+      &:first-child {
+        padding: 20px 0 20px 30px;
+        text-align: left;
+      }
+      &:last-child {
+        padding: 20px 20px 20px 0;
+        text-align: right;
+      }
+    }
+    thead {
+      th {
+        font-family: SFProDisplay-Regular;
+        font-size: 16px;
+        color: $dim-gray;
+        font-weight: 400;
+      }
+    }
+    tbody {
+      tr {
+        td {
+          position: relative;
+          font-family: SFProDisplay-Medium;
+          font-size: 16px;
+          color: $midnight-moss;
+          background: $white;
+          &::before {
+            content: "";
+            position: absolute;
+            background-color: blue;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: -1px;
+            border-top: 1px solid transparent;
+            border-bottom: 1px solid transparent;
+            background: transparent;
+          }
+          &:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            &::before {
+              border-left: 1px solid transparent;
+
+              border-top-left-radius: 8px;
+              border-bottom-left-radius: 8px;
+            }
+          }
+          &:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            &::before {
+              border-top-right-radius: 8px;
+              border-right: 1px solid transparent;
+              border-bottom-right-radius: 8px;
+            }
+          }
+        }
+
+        &:hover {
+          td {
+            &::before {
+              border-color: $light-grey;
+            }
+          }
+        }
+      }
+    }
+  }
+  table.main {
+    margin-top: -82px;
+    @media only screen and (min-width: 601px) and (max-width: 700px) {
+      margin-top: -101px;
+    }
+  }
+  &__tee-time {
+    width: 15%;
+  }
+  &__player {
+    width: 20%;
+  }
+  &__start {
+    width: 15%;
+  }
+  &__course {
+    width: 20%;
+  }
+}

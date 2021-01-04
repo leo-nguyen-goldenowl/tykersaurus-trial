@@ -9,5 +9,5 @@ export {
   useMergeState,
   useOutsideDetector,
   useScrollToTop,
-  useWindowSize,
+  useWindowSize
 }

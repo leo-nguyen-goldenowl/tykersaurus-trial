@@ -1,0 +1,32 @@
+@import "src/assets/scss/_variables.scss";
+@import "src/assets/scss/_mixins.scss";
+@import "src/assets/scss/_extends.scss";
+
+.select-large {
+  padding: 20px 24px;
+  border-radius: 10px;
+  border: solid 1px $hawkes-blue;
+  p {
+    @include text(SFProDisplay-Regular, 12px, $midnight-moss, null);
+    margin-bottom: 8px;
+  }
+  div {
+    @include flex(space-between, center);
+    position: relative;
+    select {
+      width: 100%;
+      @include select();
+      font-family: SFProDisplay-Bold;
+      font-size: 22px;
+      appearance: none;
+      z-index: 2;
+      background: transparent;
+      cursor: pointer;
+    }
+    svg {
+      position: absolute;
+      right: 0;
+      z-index: 1;
+    }
+  }
+}
