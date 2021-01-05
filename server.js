@@ -14,6 +14,8 @@ connectDB()
 if (process.env.NODE_ENV !== 'production') {
   app.get('/', (req, res) => res.send('API running'))
 } else {
+  app.get('/', (req, res) => res.send('API running'))
+
   app.use(express.static(path.join(__dirname, 'client/build')))
 
   app.get('*', function (req, res) {
