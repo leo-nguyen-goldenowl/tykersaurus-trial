@@ -26,6 +26,7 @@ const createReceiptInBackgroundJob = async (ticket) => {
   })
 
   try {
+
     const { from: fromTeeTime, to: toTeeTime } = teeTimeRange
     const partOfSession = session.split(',')
 
@@ -48,6 +49,7 @@ const createReceiptInBackgroundJob = async (ticket) => {
         ticket: receipt,
         status: false
       })
+
       await DriverHelper.quitBrowser({ webDriver })
     }
 
@@ -67,13 +69,12 @@ const createReceiptInBackgroundJob = async (ticket) => {
     })
 
     if (checkSearch === false) {
-      await DriverHelper.quitBrowser({ webDriver })
-
       receipt.message = "Don't have any slots for booking!!!"
       await ReceiptHelper.createReceiptWithStatus({
         ticket: receipt,
         status: false
       })
+
       await DriverHelper.quitBrowser({ webDriver })
     }
 
@@ -81,26 +82,26 @@ const createReceiptInBackgroundJob = async (ticket) => {
       webDriver,
       teeTimeRange
     })
-
+    // await DriverHelper.quitBrowser({ webDriver })
     if (!courseByTeeTimeRange) {
-      await DriverHelper.quitBrowser({ webDriver })
       receipt.message = 'No slots available within time range!!!'
       await ReceiptHelper.createReceiptWithStatus({
         ticket: receipt,
         status: false
       })
+
       await DriverHelper.quitBrowser({ webDriver })
     } else {
       receipt.teeTime = courseByTeeTimeRange['teeTime']
       await bookCourse({ webDriver, courseByTeeTimeRange })
     }
 
-    await DriverHelper.quitBrowser({ webDriver })
-
     await ReceiptHelper.createReceiptWithStatus({
       ticket: receipt,
       status: true
     })
+
+    await DriverHelper.quitBrowser({ webDriver })
   } catch (error) {
     console.log(error)
 
@@ -109,18 +110,22 @@ const createReceiptInBackgroundJob = async (ticket) => {
       (error.message.includes('.ant-table-pagination') ||
         error.message.includes(`input[@value="${hole}"]`))
     ) {
-      await DriverHelper.quitBrowser({ webDriver })
-
       receipt.message = "Don't have any slots for booking!!!"
+      await ReceiptHelper.createReceiptWithStatus({
+        ticket: receipt,
+        status: false
+      })
+
+      await DriverHelper.quitBrowser({ webDriver })
     }
 
-    await DriverHelper.quitBrowser({ webDriver })
-
-    // receipt.message = 'Server error...'
+    receipt.message = 'Server error...'
     await ReceiptHelper.createReceiptWithStatus({
       ticket: receipt,
       status: false
     })
+
+    await DriverHelper.quitBrowser({ webDriver })
   }
 }
 

@@ -7,7 +7,7 @@ module.exports = new (class ReceiptController {
     let loop = 0
     const fn = async () => {
       try {
-        const listReceipt = await Receipt.find({ status: true })
+        const listReceipt = await Receipt.find()
         if (listReceipt.length !== currentLength) {
           const response = generateResponse({
             statusSuccess: true,

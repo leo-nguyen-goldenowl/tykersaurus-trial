@@ -94,11 +94,12 @@ module.exports = new (class TicketHelper {
   }
 
   async findCourseByTeeTimeRange({ webDriver, teeTimeRange }) {
+
     const containerTeeTime = await DriverHelper.findElementWaitUntilByClassName(
       { webDriver, name: 'ant-table-tbody' }
     )
 
-    await webDriver.manage().setTimeouts({ implicit: 10000 })
+    await webDriver.manage().setTimeouts({ implicit: 5000 })
 
     let listElementCourseWithTeeTime = []
 

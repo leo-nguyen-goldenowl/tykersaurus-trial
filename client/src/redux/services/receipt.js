@@ -14,12 +14,18 @@ const fetchListReceipt = () => async (dispatch, getState) => {
       const res = await api.get(
         `/receipts?current=${getState().receipt.listReceipt.length}`
       )
-      console.log(res)
+
       if (isSuccessResponse(res)) {
         const { result } = res.data
         const { listReceipt } = result
 
-        dispatch(getListReceipt({ listReceipt }))
+        dispatch(
+          getListReceipt({
+            listReceipt: listReceipt.filter(
+              (receipt) => receipt.status === true
+            )
+          })
+        )
       } else {
         dispatch(failRequestReceipt())
       }
