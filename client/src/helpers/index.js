@@ -1,14 +1,16 @@
 import { toast } from 'react-toastify'
 
-export const toastifyNotify = (type, err) => {
-  toast[type](err, {
+export const toastifyNotify = (type, err, autoClose = false, onClose) => {
+  toast(err, {
     position       : 'top-right',
-    autoClose      : 5000,
-    hideProgressBar: false,
+    autoClose      : autoClose || false,
+    hideProgressBar: !autoClose,
     closeOnClick   : true,
     pauseOnHover   : true,
     draggable      : true,
-    progress       : undefined
+    progress       : undefined,
+    type           : type,
+    onClose        : onClose
   })
 }
 
@@ -17,9 +19,9 @@ export const isSuccessResponse = (res) => {
   switch (statusCode) {
     case 200:
     case 201:
-      return true
     case 204:
-      return false
+      return true
+
     default:
       toastifyNotify('error', message)
 

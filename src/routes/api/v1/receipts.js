@@ -18,4 +18,11 @@ router.post('/', async (req, res) => {
   return ReceiptController.createReceipt(req, res)
 })
 
+// @route   POST api/receipts/
+// @desc    Read receipt
+// @access  Public
+router.post('/read-receipt/:id', async (req, res) => {
+  return ReceiptController.readReceipt(req, res)
+})
+
 module.exports = router

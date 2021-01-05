@@ -7,8 +7,9 @@ module.exports = new (class ReceiptController {
     let loop = 0
     const fn = async () => {
       try {
-        const listReceipt = await Receipt.find()
-        if (listReceipt.length !== currentLength) {
+        const listReceipt = await Receipt.find(null, { __v: 0 })
+
+        if (listReceipt.length !== Number(currentLength)) {
           const response = generateResponse({
             statusSuccess: true,
             statusCode   : 200,
@@ -70,5 +71,15 @@ module.exports = new (class ReceiptController {
         msg: 'Server error...'
       })
     }
+  }
+  async readReceipt(req, res) {
+    const { id } = req.params
+    await Receipt.findByIdAndUpdate(id, { flag_read: true })
+    const response = generateResponse({
+      statusSuccess: true,
+      statusCode   : 200,
+      message      : 'Seen receipt successfully!!!'
+    })
+    return res.json(response)
   }
 })()

@@ -53,7 +53,7 @@ module.exports = new (class DriverHelper {
    * @param {string} urlWebsite
    */
   async findElementWaitUntilByClassName({ webDriver, name }) {
-    return webDriver.wait(until.elementLocated(By.className(name)), 10000)
+    return webDriver.wait(until.elementLocated(By.className(name)), 30000)
   }
 
   /**
@@ -66,7 +66,7 @@ module.exports = new (class DriverHelper {
 
     const container = await webDriver.wait(
       until.elementLocated(By.className(containerName)),
-      10000
+      30000
     )
 
     return container.findElements(By.className(elementName))
@@ -81,7 +81,7 @@ module.exports = new (class DriverHelper {
     const { container: containerName, element: elementName } = name
     const container = await webDriver.wait(
       until.elementLocated(By.className(containerName)),
-      10000
+      30000
     )
 
     return container.findElement(By.className(elementName))
@@ -97,7 +97,7 @@ module.exports = new (class DriverHelper {
 
     const container = await webDriver.wait(
       until.elementLocated(By.className(containerName)),
-      10000
+      30000
     )
 
     return container.findElement(By.xpath(`//${elementName}`))
@@ -113,7 +113,7 @@ module.exports = new (class DriverHelper {
 
     const container = await webDriver.wait(
       until.elementLocated(By.id(containerName)),
-      10000
+      30000
     )
     return container.findElement(By.xpath(`//${elementName}`))
   }
@@ -134,7 +134,7 @@ module.exports = new (class DriverHelper {
    */
   async clickWaitUntilElementByClassname({ webDriver, name }) {
     return webDriver
-      .wait(until.elementLocated(By.className(name)), 10000)
+      .wait(until.elementLocated(By.className(name)), 30000)
       .click()
   }
 

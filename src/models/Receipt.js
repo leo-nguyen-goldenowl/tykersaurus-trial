@@ -5,6 +5,10 @@ const ReceiptSchema = new mongoose.Schema({
     type: String
     // require: true
   },
+  flag_read: {
+    type   : Boolean,
+    requrie: true
+  },
   status: {
     type   : Boolean,
     require: true
@@ -36,9 +40,6 @@ const ReceiptSchema = new mongoose.Schema({
   created_at: {
     type   : String,
     require: true
-  },
-  message: {
-    type: String
   }
 })
 

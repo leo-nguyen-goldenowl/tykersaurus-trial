@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
 import receipt from './reducers/receipt'
+import ticket from './reducers/ticket'
 
 const appReducer = combineReducers({
-  receipt
+  receipt,
+  ticket
 })
 
 const rootReducer = (state, action) => {

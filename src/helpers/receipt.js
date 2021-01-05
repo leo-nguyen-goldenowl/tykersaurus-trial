@@ -11,7 +11,8 @@ module.exports = new (class ReceiptHelper {
       hole,
       teeTime,
       created_at: new Date(),
-      status
+      status,
+      flag_read : false
     })
 
     return receipt.save()
