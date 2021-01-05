@@ -12,7 +12,7 @@
   &__top {
     margin-bottom: 30px;
     @include responsive(tablet) {
-      @include flex(null,center);
+      @include flex(null, center);
     }
     @include responsive(small-desktop) {
       @include flex();
@@ -30,7 +30,6 @@
     }
   }
   &__bottom {
-    margin-bottom: 30px;
     @include multiple-responsive(
       small-desktop,
       tablet,
@@ -40,9 +39,11 @@
     ) {
       @include flex(space-between, center);
       flex-wrap: wrap;
+      margin-bottom: 30px;
     }
     @include responsive(medium-desktop) {
       @include flex(space-between);
+          margin-bottom: 0;
     }
 
     &__item {

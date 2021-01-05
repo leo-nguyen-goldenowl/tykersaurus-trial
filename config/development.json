@@ -7,5 +7,7 @@
     },
     "url": " https://www.golfres-system.com/"
   },
-  "database": {}
+  "database": {
+    "mongoURI": "mongodb+srv://admin:S@ng1608@cluster0.na5jm.mongodb.net/tykersaurus-trial?retryWrites=true&w=majority"
+  }
 }

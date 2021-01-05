@@ -1,20 +1,20 @@
 import * as React from 'react'
-// import { Provider } from "react-redux";
+import { Provider } from 'react-redux'
 import { isTablet, isBrowser } from 'react-device-detect'
 import { ToastContainer, Flip } from 'react-toastify'
+import configureStore from './configureStore'
 
 import DashboardPage from 'pages/Dashboard'
 
 import './libs/reactifyCss'
 
+const { store } = configureStore()
+
 function App() {
   return (
-    // <Provider>
-    <>
+    <Provider store={store}>
       <ToastContainer
-        autoClose={5000}
         transition={Flip}
-        closeButton={false}
         newestOnTop
       />
       <div className='App'>
@@ -26,8 +26,7 @@ function App() {
           </div>
         )}
       </div>
-    </>
-    // </Provider>
+    </Provider>
   )
 }
 

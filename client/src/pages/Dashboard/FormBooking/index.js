@@ -1,6 +1,9 @@
 import React from 'react'
 import moment from 'moment'
+import { useDispatch } from 'react-redux'
 import { useMergeState } from 'hooks'
+
+import { bookingCourse } from 'redux/services/ticket'
 
 import ButtonDefault from 'components/Button/Default'
 import SelectMini from 'components/Select/Mini'
@@ -9,8 +12,11 @@ import DatePicker from 'components/Picker/Date'
 import TimePicker from 'components/Picker/Time'
 
 import './style.scss'
+import { toastifyNotify } from 'helpers'
 
 const FormBooking = () => {
+  const dispatch = useDispatch()
+
   const listSelectTop = [
     {
       label   : 'Session',
@@ -80,9 +86,23 @@ const FormBooking = () => {
 
   const handleSubmit = () => {
     if (handleValidDataBooking()) {
-      console.log('Ready to book')
+      const { session, hole, player, course, date, teeTimeRange } = dataBooking
+
+      const infoCourse = {
+        session,
+        hole        : Number(hole),
+        player      : Number(player),
+        course,
+        date        : moment(date).format('MM/DD/YYYY'),
+        teeTimeRange: {
+          from: moment(teeTimeRange.from).format('HH:mm'),
+          to  : moment(teeTimeRange.to).format('HH:mm')
+        }
+      }
+      console.log(infoCourse)
+      dispatch(bookingCourse({ infoCourse }))
     } else {
-      console.log('Invalid data')
+      toastifyNotify('error', 'Please choose valid time!!!', 5000)
     }
   }
 
