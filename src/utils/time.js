@@ -13,11 +13,11 @@ const getMaxDate = () => {
   return moment(todayMoment).add(
     moment(moment()).diff(
       moment(
-        moment().add(0, 'days').format('MM/DD/YYYY 7:00'),
+        moment().add(1, 'days').format('MM/DD/YYYY 7:00'),
         'MM-DD-YYYY hh:mm'
       ),
       'seconds'
-    ) > -28800
+    ) > 0
       ? 7
       : 6,
     'days'
