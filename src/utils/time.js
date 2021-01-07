@@ -8,9 +8,9 @@ const convertTeeTimeToMinute = (teeTime) => {
   return Number(hourTeeTime * 60 + minuteTeeTime)
 }
 
-const accessBooking = (date) => {
+const getMaxDate = () => {
   const todayMoment = moment()
-  const maxDate = moment(todayMoment).add(
+  return moment(todayMoment).add(
     moment(moment()).diff(
       moment(
         moment().add(-1, 'days').format('MM/DD/YYYY 23:00'),
@@ -22,6 +22,10 @@ const accessBooking = (date) => {
       : 6,
     'days'
   )
+}
+
+const accessBooking = (date) => {
+  const maxDate = getMaxDate()
 
   return (
     moment(moment(maxDate).format('MM/DD/YYYY 00:00')).diff(
@@ -31,4 +35,4 @@ const accessBooking = (date) => {
   )
 }
 
-module.exports = { convertTeeTimeToMinute, accessBooking }
+module.exports = { convertTeeTimeToMinute, accessBooking, getMaxDate }

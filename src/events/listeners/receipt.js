@@ -1,4 +1,5 @@
 const Receipt = require('../../models/Receipt')
+// const Count = require('../../models/Count')
 const { driver } = require('../../constants')
 const { ReceiptHelper, DriverHelper } = require('../../helpers')
 const {
@@ -10,7 +11,7 @@ const { convertTeeTimeToMinute } = require('../../utils/time')
 const { loginWithDefaultAccount } = require('../../controllers/auth')
 
 const createReceiptInBackgroundJob = async (ticket) => {
-  const { date, session, course, player, hole, teeTimeRange } = ticket
+  const { date, session, course, player, hole, teeTimeRange, count } = ticket
 
   const webDriver = await DriverHelper.openBrowser({
     type: driver.browser.CHROME
@@ -49,7 +50,11 @@ const createReceiptInBackgroundJob = async (ticket) => {
         status: false
       })
 
-      await DriverHelper.quitBrowser({ webDriver })
+      if (count) {
+        count.count = count.count - 1
+        await count.save()
+      }
+      return await DriverHelper.quitBrowser({ webDriver })
     }
 
     const dateISOString = new Date(date)
@@ -74,7 +79,11 @@ const createReceiptInBackgroundJob = async (ticket) => {
         status: false
       })
 
-      await DriverHelper.quitBrowser({ webDriver })
+      if (count) {
+        count.count = count.count - 1
+        await count.save()
+      }
+      return await DriverHelper.quitBrowser({ webDriver })
     }
 
     const courseByTeeTimeRange = await findCourseByTeeTimeRange({
@@ -82,7 +91,6 @@ const createReceiptInBackgroundJob = async (ticket) => {
       teeTimeRange
     })
 
-    console.log(courseByTeeTimeRange)
     if (!courseByTeeTimeRange) {
       receipt.message = 'No slots available within time range!!!'
       await ReceiptHelper.createReceiptWithStatus({
@@ -90,7 +98,11 @@ const createReceiptInBackgroundJob = async (ticket) => {
         status: false
       })
 
-      await DriverHelper.quitBrowser({ webDriver })
+      if (count) {
+        count.count = count.count - 1
+        await count.save()
+      }
+      return await DriverHelper.quitBrowser({ webDriver })
     } else {
       receipt.teeTime = courseByTeeTimeRange['teeTime']
       await bookCourse({ webDriver, courseByTeeTimeRange })
@@ -101,7 +113,11 @@ const createReceiptInBackgroundJob = async (ticket) => {
       status: true
     })
 
-    await DriverHelper.quitBrowser({ webDriver })
+    if (count) {
+      count.count = count.count - 1
+      await count.save()
+    }
+    return await DriverHelper.quitBrowser({ webDriver })
   } catch (error) {
     console.log(error)
 
@@ -116,18 +132,23 @@ const createReceiptInBackgroundJob = async (ticket) => {
         status: false
       })
 
-      await DriverHelper.quitBrowser({ webDriver })
+      if (count) {
+        count.count = count.count - 1
+        await count.save()
+      }
+      return await DriverHelper.quitBrowser({ webDriver })
     } else {
       receipt.message = 'Server error...'
       await ReceiptHelper.createReceiptWithStatus({
         ticket: receipt,
         status: false
       })
-
-      await DriverHelper.quitBrowser({ webDriver })
+      if (count) {
+        count.count = count.count - 1
+        await count.save()
+      }
+      return await DriverHelper.quitBrowser({ webDriver })
     }
-  } finally {
-    await DriverHelper.quitBrowser({ webDriver })
   }
 }
 
