@@ -26,7 +26,6 @@ const createReceiptInBackgroundJob = async (ticket) => {
   })
 
   try {
-
     const { from: fromTeeTime, to: toTeeTime } = teeTimeRange
     const partOfSession = session.split(',')
 
@@ -117,15 +116,15 @@ const createReceiptInBackgroundJob = async (ticket) => {
       })
 
       await DriverHelper.quitBrowser({ webDriver })
+    } else {
+      receipt.message = 'Server error...'
+      await ReceiptHelper.createReceiptWithStatus({
+        ticket: receipt,
+        status: false
+      })
+
+      await DriverHelper.quitBrowser({ webDriver })
     }
-
-    receipt.message = 'Server error...'
-    await ReceiptHelper.createReceiptWithStatus({
-      ticket: receipt,
-      status: false
-    })
-
-    await DriverHelper.quitBrowser({ webDriver })
   }
 }
 

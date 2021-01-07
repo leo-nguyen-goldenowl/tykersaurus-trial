@@ -1,5 +1,6 @@
 // const moment = require('moment')
 const { validationResult } = require('express-validator')
+const moment = require('moment')
 const {
   // driver,
   receipts
@@ -17,6 +18,8 @@ const {
 // const { loginWithDefaultAccount } = require('./auth')
 
 const { receiptEventEmitter } = require('../events/dispatchers/receipt')
+const { time } = require('../utils')
+const Task = require('../models/Task')
 
 module.exports = new (class TicketController {
   /**
@@ -112,7 +115,39 @@ module.exports = new (class TicketController {
         hole,
         teeTimeRange
       }
-      receiptEventEmitter.emit(receipts.NEW_RECEIPT_CREATED, ticket)
+
+      const todayMoment = moment()
+      const maxDate = moment(todayMoment).add(
+        moment(moment()).diff(
+          moment(moment().format('MM/DD/YYYY 7:00'), 'MM-DD-YYYY hh:mm'),
+          'seconds'
+        ) > 0
+          ? 7
+          : 6,
+        'days'
+      )
+
+      const isAccessBooking = time.accessBooking(date)
+
+      if (!isAccessBooking) {
+        console.log('cant book now')
+
+        const task = new Task({
+          date,
+          course,
+          session,
+          player,
+          hole,
+          teeTimeRange
+        })
+        await task.save()
+      } else {
+        console.log('book now')
+        receiptEventEmitter.emit(receipts.NEW_RECEIPT_CREATED, ticket)
+      }
+      console.log(isAccessBooking)
+      console.log(moment(moment(maxDate).format('MM/DD/YYYY 00:00')))
+      console.log(ticket)
 
       const response = generateResponse({
         statusSuccess: true,
@@ -122,22 +157,7 @@ module.exports = new (class TicketController {
       return res.json(response)
     } catch (error) {
       console.log(error)
-      // if (
-      //   error.name === 'NoSuchElementError' &&
-      //   (error.message.includes('.ant-table-pagination') ||
-      //     error.message.includes(`input[@value="${hole}"]`))
-      // ) {
-      //   await DriverHelper.quitBrowser({ webDriver })
 
-      //   const response = generateResponse({
-      //     statusSuccess: false,
-      //     statusCode   : 200,
-      //     message      : "Don't have any slots for booking!!!"
-      //   })
-      //   return res.json(response)
-      // }
-
-      // await DriverHelper.quitBrowser({ webDriver })
       res.status(500).json({
         msg: 'Server error...'
       })

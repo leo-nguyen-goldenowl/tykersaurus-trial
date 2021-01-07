@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 })
 
 // @route   POST api/receipts/
-// @desc    Create list receipt
+// @desc    Create receipt
 // @access  Public
 router.post('/', async (req, res) => {
   return ReceiptController.createReceipt(req, res)

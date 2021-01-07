@@ -94,7 +94,6 @@ module.exports = new (class TicketHelper {
   }
 
   async findCourseByTeeTimeRange({ webDriver, teeTimeRange }) {
-
     const containerTeeTime = await DriverHelper.findElementWaitUntilByClassName(
       { webDriver, name: 'ant-table-tbody' }
     )
@@ -112,7 +111,7 @@ module.exports = new (class TicketHelper {
         }
       }
     )
-
+    // console.log(listItemPagination)
     for (let itemPagination of listItemPagination) {
       await itemPagination.getText()
       await itemPagination.click()
@@ -144,10 +143,9 @@ module.exports = new (class TicketHelper {
       }
 
       // Wait for nexting page
-      await webDriver.manage().setTimeouts({ implicit: 5000 })
-
-      return listElementCourseWithTeeTime.sort((x, y) => x.index > y.index)[0]
+      await webDriver.manage().setTimeouts({ implicit: 10000 })
     }
+    return listElementCourseWithTeeTime.sort((x, y) => x.index > y.index)[0]
   }
 
   async bookCourse({ webDriver, courseByTeeTimeRange }) {
