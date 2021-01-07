@@ -5,14 +5,17 @@ const convertTeeTimeToMinute = (teeTime) => {
   const hourTeeTime = listPartOfTeeTime[0]
   const minuteTeeTime = listPartOfTeeTime[1]
 
-  return hourTeeTime * 60 + minuteTeeTime
+  return Number(hourTeeTime * 60 + minuteTeeTime)
 }
 
 const accessBooking = (date) => {
   const todayMoment = moment()
   const maxDate = moment(todayMoment).add(
     moment(moment()).diff(
-      moment(moment().format('MM/DD/YYYY 7:00'), 'MM-DD-YYYY hh:mm'),
+      moment(
+        moment().add(-1, 'days').format('MM/DD/YYYY 23:00'),
+        'MM-DD-YYYY hh:mm'
+      ),
       'seconds'
     ) > 0
       ? 7

@@ -1,6 +1,6 @@
 // const moment = require('moment')
 const { validationResult } = require('express-validator')
-const moment = require('moment')
+// const moment = require('moment')
 const {
   // driver,
   receipts
@@ -116,16 +116,16 @@ module.exports = new (class TicketController {
         teeTimeRange
       }
 
-      const todayMoment = moment()
-      const maxDate = moment(todayMoment).add(
-        moment(moment()).diff(
-          moment(moment().format('MM/DD/YYYY 7:00'), 'MM-DD-YYYY hh:mm'),
-          'seconds'
-        ) > 0
-          ? 7
-          : 6,
-        'days'
-      )
+      // const todayMoment = moment()
+      // const maxDate = moment(todayMoment).add(
+      //   moment(moment()).diff(
+      //     moment(moment().format('MM/DD/YYYY 7:00'), 'MM-DD-YYYY hh:mm'),
+      //     'seconds'
+      //   ) > 0
+      //     ? 7
+      //     : 6,
+      //   'days'
+      // )
 
       const isAccessBooking = time.accessBooking(date)
 
@@ -147,9 +147,9 @@ module.exports = new (class TicketController {
         console.log('book now')
         receiptEventEmitter.emit(receipts.NEW_RECEIPT_CREATED, ticket)
       }
-      console.log(isAccessBooking)
-      console.log(moment(moment(maxDate).format('MM/DD/YYYY 00:00')))
-      console.log(ticket)
+      // console.log(isAccessBooking)
+      // console.log(moment(moment(maxDate).format('MM/DD/YYYY 00:00')))
+      // console.log(ticket)
 
       const response = generateResponse({
         statusSuccess: true,
