@@ -81,7 +81,7 @@ const createReceiptInBackgroundJob = async (ticket) => {
       webDriver,
       teeTimeRange
     })
-    // await DriverHelper.quitBrowser({ webDriver })
+
     if (!courseByTeeTimeRange) {
       receipt.message = 'No slots available within time range!!!'
       await ReceiptHelper.createReceiptWithStatus({

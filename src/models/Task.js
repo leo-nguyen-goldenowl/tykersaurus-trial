@@ -1,25 +1,29 @@
 const mongoose = require('mongoose')
 
 const TaskSchema = new mongoose.Schema({
+  checkBooking: {
+    type    : Boolean,
+    required: true
+  },
   session: {
-    type   : String,
-    require: true
+    type    : String,
+    required: true
   },
   hole: {
-    type   : Number,
-    require: true
+    type    : Number,
+    required: true
   },
   player: {
-    type   : Number,
-    require: true
+    type    : Number,
+    required: true
   },
   course: {
-    type   : String,
-    require: true
+    type    : String,
+    required: true
   },
   date: {
-    type   : String,
-    require: true
+    type    : String,
+    required: true
   },
   teeTimeRange: {
     from: {
@@ -32,8 +36,8 @@ const TaskSchema = new mongoose.Schema({
     }
   },
   created_at: {
-    type   : String,
-    require: true
+    type    : String,
+    required: true
   }
 })
 

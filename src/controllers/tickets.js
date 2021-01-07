@@ -138,7 +138,9 @@ module.exports = new (class TicketController {
           session,
           player,
           hole,
-          teeTimeRange
+          teeTimeRange,
+          checkBooking: false,
+          created_at  : new Date()
         })
         await task.save()
       } else {
