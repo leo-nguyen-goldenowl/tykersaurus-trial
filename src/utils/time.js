@@ -9,17 +9,15 @@ const convertTeeTimeToMinute = (teeTime) => {
 }
 
 const getMaxDate = () => {
-  const todayMoment = moment()
+  const plusUTC = process.env.NODE_ENV !== 'production' ? 8 : 1
+  const todayMoment = moment().add(plusUTC, 'hours')
   return moment(todayMoment).add(
-    moment(moment()).diff(
-      moment(
-        moment().add(1, 'days').format('MM/DD/YYYY 7:00'),
-        'MM-DD-YYYY hh:mm'
-      ),
+    moment(moment(todayMoment)).diff(
+      moment(todayMoment.format('MM/DD/YYYY 7:00'), 'MM/DD/YYYY hh:mm'),
       'seconds'
     ) > 0
-      ? 8
-      : 7,
+      ? 7
+      : 6,
     'days'
   )
 }
