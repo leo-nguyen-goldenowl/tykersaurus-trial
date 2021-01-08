@@ -196,5 +196,11 @@ module.exports = new (class TicketHelper {
       container: footerModalBooking,
       name     : 'ant-btn-primary'
     })
+
+    // click confirm
+    //  await DriverHelper.clickElementByClassnameInContainer({
+    //   container: footerModalBooking,
+    //   name     : 'ant-btn-primary'
+    // })
   }
 })()
