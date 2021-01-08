@@ -94,7 +94,6 @@ module.exports = new (class TicketHelper {
   }
 
   async findCourseByTeeTimeRange({ webDriver, teeTimeRange }) {
-
     const containerTeeTime = await DriverHelper.findElementWaitUntilByClassName(
       { webDriver, name: 'ant-table-tbody' }
     )
@@ -130,10 +129,11 @@ module.exports = new (class TicketHelper {
         ).getText()
 
         const currentTeeTime = time.convertTeeTimeToMinute(teetimeText)
-
         if (
-          currentTeeTime >= time.convertTeeTimeToMinute(fromTeeTime) &&
-          currentTeeTime <= time.convertTeeTimeToMinute(toTeeTime)
+          Number(currentTeeTime) >=
+            Number(time.convertTeeTimeToMinute(fromTeeTime)) &&
+          Number(currentTeeTime) <=
+            Number(time.convertTeeTimeToMinute(toTeeTime))
         )
           listElementCourseWithTeeTime.push({
             elementPage  : itemPagination,
@@ -144,19 +144,36 @@ module.exports = new (class TicketHelper {
       }
 
       // Wait for nexting page
-      await webDriver.manage().setTimeouts({ implicit: 5000 })
-
-      return listElementCourseWithTeeTime.sort((x, y) => x.index > y.index)[0]
+      await webDriver.manage().setTimeouts({ implicit: 10000 })
     }
+
+    return listElementCourseWithTeeTime.sort((x, y) => x.index > y.index)[0]
   }
 
   async bookCourse({ webDriver, courseByTeeTimeRange }) {
     await courseByTeeTimeRange['elementPage'].click()
-    await (
-      await courseByTeeTimeRange['elementCourse'].findElement(
-        By.className('ant-btn-primary')
-      )
-    ).click()
+    await webDriver.manage().setTimeouts({ implicit: 5000 })
+
+    const containerTeeTime = await DriverHelper.findElementWaitUntilByClassName(
+      { webDriver, name: 'ant-table-tbody' }
+    )
+
+    const listTeeTimeElementCurrent = await containerTeeTime.findElements(
+      By.className('ant-table-row-level-0')
+    )
+
+    for (let teeTime of listTeeTimeElementCurrent) {
+      const teetimeText = await (
+        await teeTime.findElement(By.className('ant-table-row-cell-break-word'))
+      ).getText()
+
+      if (teetimeText === courseByTeeTimeRange.teeTime) {
+        const buttonBook = await await teeTime.findElement(
+          By.className('ant-btn-primary')
+        )
+        await buttonBook.click()
+      }
+    }
 
     const footerModalBooking = await DriverHelper.findElementByClassNameInContainerByClassName(
       {
@@ -179,5 +196,11 @@ module.exports = new (class TicketHelper {
       container: footerModalBooking,
       name     : 'ant-btn-primary'
     })
+
+    // click confirm
+    //  await DriverHelper.clickElementByClassnameInContainer({
+    //   container: footerModalBooking,
+    //   name     : 'ant-btn-primary'
+    // })
   }
 })()

@@ -1,6 +1,6 @@
 import React from 'react'
 import DatePicker from 'react-datepicker'
-import moment from 'moment'
+// import moment from 'moment'
 
 import { Img } from 'reusable'
 
@@ -11,17 +11,17 @@ import './style.scss'
 const DatePickerCustom = ({ label, value, name, onChange }) => {
   const IconPicker = CalendarIcon
 
-  const todayMoment = moment()
+  // const todayMoment = moment()
   const today = new Date()
-  const maxDate = moment(todayMoment).add(
-    moment(moment()).diff(
-      moment(moment().format('MM/DD/YYYY 7:00'), 'MM-DD-YYYY hh:mm'),
-      'seconds'
-    ) > 0
-      ? 7
-      : 6,
-    'days'
-  )
+  // const maxDate = moment(todayMoment).add(
+  //   moment(moment()).diff(
+  //     moment(moment().format('MM/DD/YYYY 7:00'), 'MM-DD-YYYY hh:mm'),
+  //     'seconds'
+  //   ) > 0
+  //     ? 7
+  //     : 6,
+  //   'days'
+  // )
 
   return (
     <div className='datepicker-custom'>
@@ -32,7 +32,7 @@ const DatePickerCustom = ({ label, value, name, onChange }) => {
             selected={new Date(value)}
             onChange={(date) => onChange(date)}
             minDate={today}
-            maxDate={new Date(maxDate)}
+            // maxDate={new Date(maxDate)}
             showDisabledMonthNavigation
           />
         </div>
