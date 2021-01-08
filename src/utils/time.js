@@ -18,8 +18,8 @@ const getMaxDate = () => {
       ),
       'seconds'
     ) > 0
-      ? 7
-      : 6,
+      ? 8
+      : 7,
     'days'
   )
 }
