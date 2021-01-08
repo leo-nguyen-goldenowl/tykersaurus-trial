@@ -29,7 +29,7 @@ connectDB().then(async () => {
   for (const task of listTask) {
     receiptEventEmitter.emit(receipts.NEW_RECEIPT_CREATED, {
       ...task._doc,
-      count
+      countId: count.id
     })
   }
 
