@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test MyBooking component snapshots MyBooking component should match snapshots 1`] = `
+<div
+  className="my-booking"
+>
+  <p
+    className="my-booking__title"
+  >
+    My booking
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th
+          className="my-booking__date"
+        >
+          Date
+        </th>
+        <th
+          className="my-booking__tee-time"
+        >
+          Tee time
+        </th>
+        <th
+          className="my-booking__player"
+        >
+          Quantity of Players
+        </th>
+        <th
+          className="my-booking__course"
+        >
+          Golf Course
+        </th>
+      </tr>
+    </thead>
+  </table>
+  <div
+    className="my-booking__container"
+  >
+    <table
+      className="main"
+    >
+      <thead
+        className="hide"
+      >
+        <tr>
+          <th
+            className="my-booking__date"
+          >
+            Date
+          </th>
+          <th
+            className="my-booking__tee-time"
+          >
+            Tee time
+          </th>
+          <th
+            className="my-booking__player"
+          >
+            Quantity of Players
+          </th>
+          <th
+            className="my-booking__course"
+          >
+            Golf Course
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+    <p>
+      Do not have any booking course
+    </p>
+  </div>
+</div>
+`;

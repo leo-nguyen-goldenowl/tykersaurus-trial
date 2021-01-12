@@ -11,8 +11,9 @@ import SelectLarge from 'components/Select/Large'
 import DatePicker from 'components/Picker/Date'
 import TimePicker from 'components/Picker/Time'
 
-import './style.scss'
 import { toastifyNotify } from 'helpers'
+
+import './style.scss'
 
 const FormBooking = () => {
   const dispatch = useDispatch()

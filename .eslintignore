@@ -4,3 +4,5 @@ client/src/registerServiceWorker.js
 client/public/*
 client/build/*
 client/node_modules/*
+*.test.js
+test.utils.js

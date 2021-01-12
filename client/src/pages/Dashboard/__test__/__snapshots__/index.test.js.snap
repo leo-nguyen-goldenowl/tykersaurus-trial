@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Dashboard component snapshots Dashboard component should match snapshots 1`] = `
+<div
+  className="dashboard-page"
+>
+  <HeaderPage />
+  <div
+    className="dashboard-page__book-course"
+  >
+    <div
+      className="dashboard-page__book-course__form"
+    >
+      <FormBooking />
+    </div>
+  </div>
+  <div
+    className="dashboard-page__my-booking"
+  >
+    <div
+      className="dashboard-page__my-booking__list"
+    >
+      <MyBooking />
+    </div>
+  </div>
+</div>
+`;

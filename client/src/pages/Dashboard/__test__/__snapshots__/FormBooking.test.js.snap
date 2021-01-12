@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test FormBooking component snapshots FormBooking component should match snapshots 1`] = `
+<div
+  className="form-booking"
+>
+  <div
+    className="form-booking__top"
+  >
+    <div
+      className="form-booking__top__item"
+    >
+      <SelectMini
+        label="Session"
+        listItem={
+          Array [
+            Object {
+              "name": "Morning",
+              "value": "07:00,11:59",
+            },
+            Object {
+              "name": "Afternoon",
+              "value": "12:00,18:00",
+            },
+          ]
+        }
+        name="session"
+        onChange={[Function]}
+        value="07:00,11:59"
+      />
+    </div>
+    <div
+      className="form-booking__top__item"
+    >
+      <SelectMini
+        label="Hole"
+        listItem={
+          Array [
+            Object {
+              "name": "9 Holes",
+              "value": 9,
+            },
+            Object {
+              "name": "18 Holes",
+              "value": 18,
+            },
+          ]
+        }
+        name="hole"
+        onChange={[Function]}
+        value={9}
+      />
+    </div>
+    <div
+      className="form-booking__top__item"
+    >
+      <SelectMini
+        label="Quantity of Players"
+        listItem={
+          Array [
+            Object {
+              "name": "2 Players",
+              "value": 2,
+            },
+            Object {
+              "name": "3 Players",
+              "value": 3,
+            },
+            Object {
+              "name": "4 Players",
+              "value": 4,
+            },
+          ]
+        }
+        name="player"
+        onChange={[Function]}
+        value={2}
+      />
+    </div>
+  </div>
+  <div
+    className="form-booking__bottom"
+  >
+    <div
+      className="form-booking__bottom__item"
+    >
+      <SelectLarge
+        label="Course"
+        listItem={
+          Array [
+            Object {
+              "name": "Classic Course",
+              "value": "Classic Course",
+            },
+            Object {
+              "name": "Masters Course",
+              "value": "Masters Course",
+            },
+          ]
+        }
+        name="course"
+        onChange={[Function]}
+        value="Classic Course"
+      />
+    </div>
+    <div
+      className="form-booking__bottom__item"
+    >
+      <DatePicker
+        label="Calendar"
+        name="calendar"
+        onChange={[Function]}
+        type="calendar"
+        value="Tue, Jan 12 2021"
+      />
+    </div>
+    <div
+      className="form-booking__bottom__item"
+    >
+      <TimePicker
+        label="Time"
+        onChange={[Function]}
+        value={
+          Object {
+            "from": "2021-01-12T04:56:55.188Z",
+            "to": "2021-01-12T04:56:55.188Z",
+          }
+        }
+      />
+    </div>
+  </div>
+  <p
+    className="form-booking__description"
+  >
+    <span>
+      Description:
+    </span>
+     Lorem ipsum dolor sit amet, modus inimicus eum no 
+    <span>
+      7AM
+    </span>
+     at nam modus 
+    <span>
+      1 week
+    </span>
+     consul. Mucius oportere vel id. Ut solum malorum conclusionemque qui. Mea te graeci eruditi honestatis. Ne iisque placerat est, mel in dicunt invenire. Te his delenit eloquentiam.
+  </p>
+  <div
+    className="form-booking__btn-submit"
+  >
+    <ButtonDefault
+      onClick={[Function]}
+      type="button"
+    >
+      Book Now
+    </ButtonDefault>
+  </div>
+</div>
+`;
