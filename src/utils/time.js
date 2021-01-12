@@ -9,7 +9,7 @@ const convertTeeTimeToMinute = (teeTime) => {
 }
 
 const getMaxDate = () => {
-  const plusUTC = process.env.NODE_ENV !== 'production' ? 8 : 1
+  const plusUTC = process.env.NODE_ENV === 'production' ? 8 : 1
   const todayMoment = moment().add(plusUTC, 'hours')
   return moment(todayMoment).add(
     moment(moment(todayMoment)).diff(
