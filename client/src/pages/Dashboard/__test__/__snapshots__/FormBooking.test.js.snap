@@ -26,7 +26,6 @@ exports[`Test FormBooking component snapshots FormBooking component should match
         }
         name="session"
         onChange={[Function]}
-        value="07:00,11:59"
       />
     </div>
     <div
@@ -48,7 +47,6 @@ exports[`Test FormBooking component snapshots FormBooking component should match
         }
         name="hole"
         onChange={[Function]}
-        value={9}
       />
     </div>
     <div
@@ -74,7 +72,6 @@ exports[`Test FormBooking component snapshots FormBooking component should match
         }
         name="player"
         onChange={[Function]}
-        value={2}
       />
     </div>
   </div>
@@ -100,7 +97,6 @@ exports[`Test FormBooking component snapshots FormBooking component should match
         }
         name="course"
         onChange={[Function]}
-        value="Classic Course"
       />
     </div>
     <div
@@ -111,7 +107,6 @@ exports[`Test FormBooking component snapshots FormBooking component should match
         name="calendar"
         onChange={[Function]}
         type="calendar"
-        value="Tue, Jan 12 2021"
       />
     </div>
     <div
@@ -120,12 +115,6 @@ exports[`Test FormBooking component snapshots FormBooking component should match
       <TimePicker
         label="Time"
         onChange={[Function]}
-        value={
-          Object {
-            "from": "2021-01-12T04:56:55.188Z",
-            "to": "2021-01-12T04:56:55.188Z",
-          }
-        }
       />
     </div>
   </div>

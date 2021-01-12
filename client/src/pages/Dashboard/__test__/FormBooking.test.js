@@ -7,22 +7,13 @@ jest
   .mock("components/Select/Large", () => "SelectLarge")
   .mock("components/Picker/Date", () => "DatePicker")
   .mock("components/Picker/Time", () => "TimePicker")
-  // .mock("moment", () => {
-  //   const moment = jest.requireActual("moment");
-
-  //   return { default: moment };
-  // })
   .mock("react-redux", () => ({
     useDispatch: () => (args) => args,
   }))
-  // .mock("hooks", () => (
-  //   { useMergeState: jest.fn().mockReturnValue({})}
-  // ))
-  // .mock("redux/services/ticket", () => ({
-  //   bookingCourse: () => (args) => args,
-  // }))
-  .mock("helpers", () => ({
-    toastifyNotify: () => (args) => args,
+  // .mock("moment", () => "moment")
+  .mock("hooks", () => ({ useMergeState: () => "useMergeState" }))
+  .mock("redux/services/ticket", () => ({
+    bookingCourse: () => (args) => args,
   }));
 
 describe("Test FormBooking component", () => {
