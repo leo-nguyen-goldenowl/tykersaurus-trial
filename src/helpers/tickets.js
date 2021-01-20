@@ -197,10 +197,33 @@ module.exports = new (class TicketHelper {
       name     : 'ant-btn-primary'
     })
 
-    // click confirm
-    //  await DriverHelper.clickElementByClassnameInContainer({
-    //   container: footerModalBooking,
-    //   name     : 'ant-btn-primary'
-    // })
+    const fn = async () => {
+      // click confirm
+      await DriverHelper.clickElementByClassnameInContainer({
+        container: footerModalBooking,
+        name     : 'ant-btn-primary'
+      })
+
+      // click button in modal
+      const buttonStatus = await DriverHelper.findElementByClassNameInContainerByClassName(
+        {
+          webDriver,
+          name: {
+            container: 'ant-modal-content',
+            element  : 'ant-btn-primary'
+          }
+        }
+      )
+
+      const textStatus = buttonStatus.getText()
+      await buttonStatus.click()
+
+      // if server busy
+      if (textStatus === 'Back') {
+        await fn()
+      }
+    }
+
+    fn()
   }
 })()
