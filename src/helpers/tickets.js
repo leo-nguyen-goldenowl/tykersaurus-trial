@@ -204,7 +204,7 @@ module.exports = new (class TicketHelper {
         name     : 'ant-btn-primary'
       })
 
-      // click button in modal
+      // get status button on modal after booking
       const buttonStatus = await DriverHelper.findElementByClassNameInContainerByClassName(
         {
           webDriver,
@@ -215,11 +215,12 @@ module.exports = new (class TicketHelper {
         }
       )
 
-      const textStatus = buttonStatus.getText()
-      await buttonStatus.click()
+      const textStatus = await buttonStatus.getText()
 
-      // if server busy
-      if (textStatus === 'Back') {
+      if (textStatus === 'Done') {
+        await buttonStatus.click()
+      } else if (textStatus === 'Back') {
+        await buttonStatus.click()
         await fn()
       }
     }
