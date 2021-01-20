@@ -225,6 +225,6 @@ module.exports = new (class TicketHelper {
       }
     }
 
-    fn()
+    await fn()
   }
 })()
