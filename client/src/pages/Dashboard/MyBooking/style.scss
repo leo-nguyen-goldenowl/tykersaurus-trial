@@ -7,7 +7,7 @@
   &__container {
     width: 100%;
     max-height: 505px;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-top: 12px;
   }
   &__title {
